@@ -1,5 +1,7 @@
 package com.owl.owlBlog.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -8,6 +10,8 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "t_attach")
+@JsonIgnoreProperties(ignoreUnknown = true, value =
+        {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class Attach implements Serializable {
     @Id
     private String id;
@@ -18,7 +22,7 @@ public class Attach implements Serializable {
 
     private String fkey;
 
-    @Column(name = "author_id")
+
     private Integer authorId;
 
     private Integer created;

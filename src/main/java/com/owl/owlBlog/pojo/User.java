@@ -1,17 +1,22 @@
 package com.owl.owlBlog.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_users")
+@JsonIgnoreProperties(ignoreUnknown = true, value =
+        {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class User {
     /**
      * user表主键
      */
     @Id
     private String uid;
+
 
     /**
      * 用户名称

@@ -1,16 +1,25 @@
 package com.owl.owlBlog.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 @Table(name = "t_contents")
+@JsonIgnoreProperties(ignoreUnknown = true, value =
+        {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class Content  implements Serializable {
     /**
      * post表主键
      */
     @Id
-    private Integer cid;
+    private String cid;
 
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.DETACH},fetch=FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","contentList"})
+    private List<Meta> metaList;
     /**
      * 内容标题
      */
@@ -91,7 +100,7 @@ public class Content  implements Serializable {
     public Content() {
     }
 
-    public Content(Integer cid, String title, String slug, Integer created, Integer modified, Integer authorId, String type, String status, String tags, String categories, Integer hits, Integer commentsNum, Boolean allowComment, Boolean allowPing, Boolean allowFeed, String content) {
+    public Content(String cid, String title, String slug, Integer created, Integer modified, Integer authorId, String type, String status, String tags, String categories, Integer hits, Integer commentsNum, Boolean allowComment, Boolean allowPing, Boolean allowFeed, String content) {
         this.cid = cid;
         this.title = title;
         this.slug = slug;
@@ -110,11 +119,11 @@ public class Content  implements Serializable {
         this.content = content;
     }
 
-    public Integer getCid() {
+    public String getCid() {
         return cid;
     }
 
-    public void setCid(Integer cid) {
+    public void setCid(String cid) {
         this.cid = cid;
     }
 

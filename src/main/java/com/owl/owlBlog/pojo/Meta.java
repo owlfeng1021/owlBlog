@@ -1,15 +1,24 @@
 package com.owl.owlBlog.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "t_meats")
+@JsonIgnoreProperties(ignoreUnknown = true, value =
+        {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class Meta {
     /**
      * 项目主键
      */
     @Id
     private String mid;
+
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.DETACH},fetch=FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","metaList"})
+    private List<Content> contentList;
 
 //    @ManyToMany(targetEntity=Teacher.class)
 //    // 使用JoinTabl来描述中间表，并描述中间表中外键与Student,Teacher的映射关系

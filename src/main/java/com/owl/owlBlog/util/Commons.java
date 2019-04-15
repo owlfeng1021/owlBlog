@@ -147,7 +147,7 @@ public final class Commons {
      * @return
      */
     public static String permalink(Content contents) {
-        return permalink(contents.getCid(), contents.getSlug());
+        return permalink(Integer.parseInt(contents.getCid()), contents.getSlug());
     }
 
 
@@ -274,7 +274,7 @@ public final class Commons {
      * @return
      */
     public static String show_thumb(Content contents) {
-        int cid = contents.getCid();
+        int cid =Integer.parseInt(contents.getCid()) ;
         int size = cid % 20;
         size = size == 0 ? 1 : size;
         return "/user/img/rand/" + size + ".jpg";

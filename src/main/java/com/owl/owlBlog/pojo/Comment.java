@@ -1,14 +1,17 @@
 package com.owl.owlBlog.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.naming.Name;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "t_comments")
-public class Comment  implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true, value =
+        {"hibernateLazyInitializer", "handler", "fieldHandler"})
+public class Comment implements Serializable {
     /**
      * comment表主键
      */
@@ -18,7 +21,9 @@ public class Comment  implements Serializable {
     /**
      * post表主键,关联字段
      */
-    private String cid;
+    @ManyToOne
+    @JoinColumn(name = "cid")
+    private List<Content> contents;
 
     /**
      * 评论生成时的GMT unix时间戳
@@ -83,9 +88,9 @@ public class Comment  implements Serializable {
     public Comment() {
     }
 
-    public Comment(String coid, String cid, Integer created, String author, Integer authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
+    public Comment(String coid, List<Content> contents, Integer created, String author, Integer authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
         this.coid = coid;
-        this.cid = cid;
+        this.contents = contents;
         this.created = created;
         this.author = author;
         this.authorId = authorId;
@@ -108,12 +113,12 @@ public class Comment  implements Serializable {
         this.coid = coid;
     }
 
-    public String getCid() {
-        return cid;
+    public List<Content> getContents() {
+        return contents;
     }
 
-    public void setCid(String cid) {
-        this.cid = cid;
+    public void setContents(List<Content> contents) {
+        this.contents = contents;
     }
 
     public Integer getCreated() {
