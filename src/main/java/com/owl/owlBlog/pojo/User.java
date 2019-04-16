@@ -8,15 +8,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_users")
-@JsonIgnoreProperties(ignoreUnknown = true, value =
-        {"hibernateLazyInitializer", "handler", "fieldHandler"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class User {
     /**
      * user表主键
      */
     @Id
     private String uid;
-
 
     /**
      * 用户名称

@@ -8,8 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_logs")
-@JsonIgnoreProperties(ignoreUnknown = true, value =
-        {"hibernateLazyInitializer", "handler", "fieldHandler"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Log {
     /**
      * 日志主键

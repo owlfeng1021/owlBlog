@@ -8,8 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "t_contents")
-@JsonIgnoreProperties(ignoreUnknown = true, value =
-        {"hibernateLazyInitializer", "handler", "fieldHandler"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Content  implements Serializable {
     /**
      * post表主键
@@ -17,8 +16,11 @@ public class Content  implements Serializable {
     @Id
     private String cid;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.DETACH},fetch=FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch=FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","contentList"})
+    @JoinTable(name = "t_contents_metas",
+            joinColumns = {@JoinColumn(name = "content_id", referencedColumnName = "cid")},
+            inverseJoinColumns = {@JoinColumn(name = "mete_id", referencedColumnName ="mid")})
     private List<Meta> metaList;
     /**
      * 内容标题

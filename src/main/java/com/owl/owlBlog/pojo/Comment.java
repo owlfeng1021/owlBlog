@@ -2,15 +2,13 @@ package com.owl.owlBlog.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.naming.Name;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "t_comments")
-@JsonIgnoreProperties(ignoreUnknown = true, value =
-        {"hibernateLazyInitializer", "handler", "fieldHandler"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Comment implements Serializable {
     /**
      * comment表主键
@@ -23,7 +21,7 @@ public class Comment implements Serializable {
      */
     @ManyToOne
     @JoinColumn(name = "cid")
-    private List<Content> contents;
+    private Content contents;
 
     /**
      * 评论生成时的GMT unix时间戳
@@ -88,7 +86,7 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
-    public Comment(String coid, List<Content> contents, Integer created, String author, Integer authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
+    public Comment(String coid, Content contents, Integer created, String author, Integer authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
         this.coid = coid;
         this.contents = contents;
         this.created = created;
@@ -113,11 +111,11 @@ public class Comment implements Serializable {
         this.coid = coid;
     }
 
-    public List<Content> getContents() {
+    public Content getContents() {
         return contents;
     }
 
-    public void setContents(List<Content> contents) {
+    public void setContents(Content contents) {
         this.contents = contents;
     }
 

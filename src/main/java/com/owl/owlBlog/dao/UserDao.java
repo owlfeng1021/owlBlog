@@ -4,6 +4,7 @@ import com.owl.owlBlog.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserDao extends JpaRepository<User,String> {
+    public User findByUid(String uid);
 //    long countByExample(UserVoExample example);
 //
 //    int deleteByExample(UserVoExample example);

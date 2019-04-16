@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TargetController {
     @GetMapping("/admin/index")
     public String index(){
-        return "admin/login";
+        return "admin/index";
     }
-    @GetMapping("/admin/test1")
+    @GetMapping("/admin/login")
     public String test1(){
-        return "admin/test1";
+        return "admin/login";
     }
 }

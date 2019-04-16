@@ -10,8 +10,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "t_attach")
-@JsonIgnoreProperties(ignoreUnknown = true, value =
-        {"hibernateLazyInitializer", "handler", "fieldHandler"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Attach implements Serializable {
     @Id
     private String id;
