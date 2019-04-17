@@ -4,23 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "t_contents")
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
-public class Content  implements Serializable {
+public class Content implements Serializable {
     /**
      * post表主键
      */
     @Id
     private String cid;
 
-    @ManyToMany(cascade = CascadeType.PERSIST,fetch=FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","contentList"})
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "t_contents_metas",
-            joinColumns = {@JoinColumn(name = "content_id", referencedColumnName = "cid")},
-            inverseJoinColumns = {@JoinColumn(name = "mete_id", referencedColumnName ="mid")})
+            joinColumns = @JoinColumn(name = "cid"),
+            inverseJoinColumns = @JoinColumn(name = "mid"))
     private List<Meta> metaList;
     /**
      * 内容标题
@@ -99,11 +99,13 @@ public class Content  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     public Content() {
     }
 
-    public Content(String cid, String title, String slug, Integer created, Integer modified, Integer authorId, String type, String status, String tags, String categories, Integer hits, Integer commentsNum, Boolean allowComment, Boolean allowPing, Boolean allowFeed, String content) {
+    public Content(String cid, List<Meta> metaList, String title, String slug, Integer created, Integer modified, Integer authorId, String type, String status, String tags, String categories, Integer hits, Integer commentsNum, Boolean allowComment, Boolean allowPing, Boolean allowFeed, String content) {
         this.cid = cid;
+        this.metaList = metaList;
         this.title = title;
         this.slug = slug;
         this.created = created;
@@ -129,6 +131,14 @@ public class Content  implements Serializable {
         this.cid = cid;
     }
 
+    public List<Meta> getMetaList() {
+        return metaList;
+    }
+
+    public void setMetaList(List<Meta> metaList) {
+        this.metaList = metaList;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -152,6 +162,7 @@ public class Content  implements Serializable {
     public void setCreated(Integer created) {
         this.created = created;
     }
+
 
     public Integer getModified() {
         return modified;

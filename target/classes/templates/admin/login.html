@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" ><!--th:with="pic=${commons.random(5, '.png')}" th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'"-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:with="pic=${commons.random(5, '.png')}"
+      th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -49,7 +51,7 @@
     </style>
 
 </head>
-<body  th:style="'background:url(/admin/images/bg/1.png);no-repeat; background-size: cover;'" ><!--th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'"-->
+<body th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'" >
 <div style="margin: 0 auto; padding-bottom: 0%; padding-top: 7.5%; width: 380px;">
     <div class="panel panel-color panel-danger panel-pages panel-shadow">
         <div class="panel-heading bg-img">

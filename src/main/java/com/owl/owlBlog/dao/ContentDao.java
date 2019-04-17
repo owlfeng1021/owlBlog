@@ -1,9 +1,12 @@
 package com.owl.owlBlog.dao;
 
 import com.owl.owlBlog.pojo.Content;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContentDao extends JpaRepository<Content,String> {
+      public Page<Content> findByType(String type, Pageable pageable);
 //    long countByExample(ContentVoExample example);
 //
 //    int deleteByExample(ContentVoExample example);

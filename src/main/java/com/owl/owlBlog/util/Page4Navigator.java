@@ -200,12 +200,20 @@ public class Page4Navigator<T> {
         this.numberOfElements = numberOfElements;
     }
 
-    public List<T> getContent() {
+    public Page<T> getPageFromJPA() {
+        return pageFromJPA;
+    }
+
+    public void setPageFromJPA(Page<T> pageFromJPA) {
+        this.pageFromJPA = pageFromJPA;
+    }
+
+    public List<T> getList() {
         return list;
     }
 
-    public void setContent(List<T> content) {
-        this.list = content;
+    public void setList(List<T> list) {
+        this.list = list;
     }
 
     public boolean isHasContent() {

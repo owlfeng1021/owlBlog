@@ -3,11 +3,11 @@ package com.owl.owlBlog.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "t_meats")
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class Meta {
     /**
      * 项目主键
@@ -15,11 +15,10 @@ public class Meta {
     @Id
     private String mid;
 
-    @ManyToMany(cascade = CascadeType.PERSIST,fetch=FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","metaList"})
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "t_contents_metas",
-            joinColumns = {@JoinColumn(name = "mete_id", referencedColumnName = "mid")},
-            inverseJoinColumns = {@JoinColumn(name = "content_id", referencedColumnName ="cid")})
+            joinColumns = @JoinColumn(name = "mid"),
+            inverseJoinColumns = @JoinColumn(name = "cid"))
     private List<Content> contentList;
 
 //    @ManyToMany(targetEntity=Teacher.class)
@@ -70,6 +69,14 @@ public class Meta {
         this.description = description;
         this.sort = sort;
         this.parent = parent;
+    }
+
+    public List<Content> getContentList() {
+        return contentList;
+    }
+
+    public void setContentList(List<Content> contentList) {
+        this.contentList = contentList;
     }
 
     public String getMid() {
