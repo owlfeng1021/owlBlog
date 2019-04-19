@@ -57,7 +57,7 @@ public class AuthController extends BaseController {
                 TaleUtils.setCookie(response,Integer.parseInt(user.getUid()));
             }
             // 记录登录操作
-            logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(),Integer.parseInt(user.getUid()));
+            logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(),user.getUid());
         } catch (Exception e) {
             error_count = null == error_count ? 1 : error_count + 1;
             if (error_count > 3) {

@@ -45,7 +45,7 @@ public class Content implements Serializable {
     /**
      * 内容所属用户id
      */
-    private Integer authorId;
+    private String authorId;
 
     /**
      * 内容类别
@@ -97,13 +97,18 @@ public class Content implements Serializable {
      */
     private String content;
 
+    @Transient
+    private String date;
+    @Transient
+    private String count;
+
     private static final long serialVersionUID = 1L;
 
 
     public Content() {
     }
 
-    public Content(String cid, List<Meta> metaList, String title, String slug, Integer created, Integer modified, Integer authorId, String type, String status, String tags, String categories, Integer hits, Integer commentsNum, Boolean allowComment, Boolean allowPing, Boolean allowFeed, String content) {
+    public Content(String cid, List<Meta> metaList, String title, String slug, Integer created, Integer modified, String authorId, String type, String status, String tags, String categories, Integer hits, Integer commentsNum, Boolean allowComment, Boolean allowPing, Boolean allowFeed, String content) {
         this.cid = cid;
         this.metaList = metaList;
         this.title = title;
@@ -172,11 +177,11 @@ public class Content implements Serializable {
         this.modified = modified;
     }
 
-    public Integer getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Integer authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 

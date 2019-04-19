@@ -8,10 +8,10 @@
 
 
     <th:block th:each="navIndex :${ pageInfo.navigatepageNums}">
-        <li th:class="${pageInfo.pageNum==navIndex}?'current':''"><a th:href="@{'/page/'+${navIndex}}"
-                                                                     th:text="${navIndex}"></a></li>
+        <li th:class="${pageInfo.pageNum==navIndex}?'current':''">
+            <a th:href="@{'/page/'+${navIndex}}"
+               th:text="${navIndex}"></a></li>
     </th:block>
-
 
     <th:block th:if="${pageInfo.hasNextPage}">
         <li class="next"><a th:href="@{'/'+${prefix}+'/'+${pageInfo.nextPage}}" th:text="${nextText}"></a></li>
@@ -19,29 +19,53 @@
 
 </ol>
 
-<div th:fragment="pageAdminNav(pageInfo)">
+<!--<div th:fragment="pageAdminNav(pageInfo)">-->
+    <!--<div class="clearfix">-->
+        <!--<ul class="pagination m-b-5 pull-right">-->
+            <!--<li th:if="${pageInfo.hasPreviousPage}">-->
+                <!--<a th:href="@{'?page='+${pageInfo.prePage}}" aria-label="Previous">-->
+                    <!--<i class="fa fa-angle-left"></i>&nbsp;上一页-->
+                <!--</a>-->
+            <!--</li>-->
+
+            <!--<th:block th:each="nav : ${pageInfo.navigatepageNums}">-->
+                <!--<li th:class="${nav==pageInfo.pageNum}?'active':''"><a th:href="@{'?page='+${nav}}" th:text="${nav}"></a>-->
+                <!--</li>-->
+            <!--</th:block>-->
+
+            <!--<th:block th:if="${pageInfo.hasNextPage}">-->
+                <!--<li>-->
+                    <!--<a th:href="@{'?page='+${pageInfo.nextPage}}" aria-label="Next">-->
+                        <!--下一页&nbsp;<i class="fa fa-angle-right"></i>-->
+                    <!--</a>-->
+                <!--</li>-->
+            <!--</th:block>-->
+
+            <!--<li><span th:text="'共'+${pageInfo.pages}+'页'"></span></li>-->
+        <!--</ul>-->
+    <!--</div>-->
+<!--</div>-->
+<div th:fragment="pageAdminNav(Page4Navigator)">
     <div class="clearfix">
         <ul class="pagination m-b-5 pull-right">
-            <li th:if="${pageInfo.hasPreviousPage}">
-                <a th:href="@{'?page='+${pageInfo.prePage}}" aria-label="Previous">
+            <li th:if="${Page4Navigator.HasPrevious}">
+                <a th:href="@{'?page='+${Page4Navigator.number}}" aria-label="Previous">
                     <i class="fa fa-angle-left"></i>&nbsp;上一页
                 </a>
             </li>
-
-            <th:block th:each="nav : ${pageInfo.navigatepageNums}">
-                <li th:class="${nav==pageInfo.pageNum}?'active':''"><a th:href="@{'?page='+${nav}}" th:text="${nav}"></a>
+            <th:block th:each="nav : ${Page4Navigator.navigatepageNums}">
+                <li th:class="${nav==Page4Navigator.number+1}?'active':''"><a th:href="@{'?page='+${nav}}" th:text="${nav}"></a>
                 </li>
             </th:block>
-
-            <th:block th:if="${pageInfo.hasNextPage}">
+            <th:block th:if="${Page4Navigator.HasNext}">
                 <li>
-                    <a th:href="@{'?page='+${pageInfo.nextPage}}" aria-label="Next">
+                    <a th:href="@{'?page='+${Page4Navigator.number+2}}" aria-label="Next">
                         下一页&nbsp;<i class="fa fa-angle-right"></i>
                     </a>
                 </li>
             </th:block>
 
-            <li><span th:text="'共'+${pageInfo.pages}+'页'"></span></li>
+            <li><span th:text="'共'+${Page4Navigator.totalPages}+'页'"></span></li>
         </ul>
     </div>
 </div>

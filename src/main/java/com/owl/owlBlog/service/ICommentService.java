@@ -4,6 +4,7 @@ package com.owl.owlBlog.service;
 import com.owl.owlBlog.bo.CommentBo;
 import com.owl.owlBlog.dao.CommentDao;
 import com.owl.owlBlog.pojo.Comment;
+import com.owl.owlBlog.pojo.Content;
 import com.owl.owlBlog.util.Page4Navigator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by BlueT on 2017/3/16.
@@ -35,8 +38,17 @@ public class ICommentService {
      * @param limit
      * @return CommentBo
      */
-    Page4Navigator<CommentBo> getComments(Integer cid, int page, int limit){
-        return  null;
+   public Page4Navigator<Comment> getComments(String cid, int page, int limit){
+       if (null != cid) {
+
+       Sort sort = new Sort(Sort.Direction.DESC, "created");
+       Pageable pageable = PageRequest.of(page, limit, sort);
+//       Content content = new Content();
+//        content.setCid(cid);
+       Page<Comment> parents = commentDao.findByContents_CidAndParentAndStatusAndStatusNotNull(cid,0,"approved",pageable);
+        return  new Page4Navigator<>(parents,5);
+       }
+       return  null;
     }
 
     /**
@@ -48,8 +60,8 @@ public class ICommentService {
      */
     public Page4Navigator<Comment> getCommentsWithPage(String uid,int page, int limit){
         Sort sort = new Sort(Sort.Direction.DESC, "created");
-        Pageable of = PageRequest.of(page, limit, sort);
-        Page<Comment> byAuthorIdNot = commentDao.findByAuthorIdNot(uid, of);
+        Pageable pageable = PageRequest.of(page-1, limit, sort);
+        Page<Comment> byAuthorIdNot = commentDao.findByAuthorIdNot(uid, pageable);
         return  new Page4Navigator<>(byAuthorIdNot,5);
     }
 

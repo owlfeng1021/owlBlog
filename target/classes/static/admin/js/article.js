@@ -64,7 +64,7 @@ function subArticle(status) {
 
 var textarea = $('#text'),
     toolbar = $('<div class="markdown-editor" id="md-button-bar" />').insertBefore(textarea.parent())
-preview = $('<div id="md-preview" class="md-hidetab" />').insertAfter('.markdown-editor');
+    preview = $('<div id="md-preview" class="md-hidetab" />').insertAfter('.markdown-editor');
 
 markdown(textarea, toolbar, preview);
 

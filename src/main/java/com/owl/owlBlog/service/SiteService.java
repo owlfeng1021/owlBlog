@@ -111,7 +111,11 @@ public class SiteService {
      *
      * @return
      */
-    public List<ArchiveBo> getArchives(){
+//    private String date;
+//    private String count;
+//    private List<Content> articles;
+    public List<Content> getArchives(){
+
         return null;
     }
 

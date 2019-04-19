@@ -35,7 +35,7 @@ public class ILogService {
      * @param ip
      * @param authorId
      */
-    public void insertLog(String action, String data, String ip, Integer authorId){
+    public void insertLog(String action, String data, String ip, String authorId){
         Log log = new Log();
         log.setAction(action);
         log.setData(data);

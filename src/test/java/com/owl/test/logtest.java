@@ -3,10 +3,8 @@ package com.owl.test;
 import com.owl.owlBlog.Application;
 
 import com.owl.owlBlog.bo.StatisticsBo;
-import com.owl.owlBlog.dao.CommentDao;
-import com.owl.owlBlog.dao.ContentDao;
-import com.owl.owlBlog.dao.MetaDao;
-import com.owl.owlBlog.dao.UserDao;
+import com.owl.owlBlog.dao.*;
+import com.owl.owlBlog.dto.Types;
 import com.owl.owlBlog.pojo.*;
 import com.owl.owlBlog.service.ILogService;
 import com.owl.owlBlog.service.IOptionService;
@@ -15,11 +13,16 @@ import com.owl.owlBlog.service.SiteService;
 import com.owl.owlBlog.util.Commons;
 import com.owl.owlBlog.util.IdWorker;
 
+import com.owl.owlBlog.util.Page4Navigator;
 import com.owl.owlBlog.util.TaleUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
@@ -50,6 +53,9 @@ public class logtest {
     MetaDao metaDao;
     @Resource
     Commons commons;
+    @Resource
+    LogDao logDao;
+
    @Test
     public void test() {
 
@@ -78,10 +84,33 @@ public class logtest {
 //
 //       // 统计操作
 //       StatisticsBo statistics = siteService.getStatistics();
-       long time = new Date().getTime();
-       int currentTime=(int)(time/1000L);
-       String fmtdate = Commons.fmtdate(currentTime, " yyyy-MM-dd HH:mm:ss");
-       String fmtdate2 = Commons.fmtdate(currentTime, " yyyy-MM-dd HH:mm:ss");
+//       long time = new Date().getTime();
+//       int currentTime=(int)(time/1000L);
+//       String fmtdate = Commons.fmtdate(currentTime, " yyyy-MM-dd HH:mm:ss");
+//       String fmtdate2 = Commons.fmtdate(currentTime, " yyyy-MM-dd HH:mm:ss");
+//       Sort sort = new Sort(Sort.Direction.DESC, "created");
+//       Pageable pageable = PageRequest.of(0, 10, sort);
+//       Page<Comment> byAuthorIdNot = commentDao.findByAuthorIdNot("1", pageable);
+//       Page<Comment> all = commentDao.findAll(pageable);
+//
+//       Pageable pageable2 = PageRequest.of(1-1, 10,sort);
+//       Page<Log> all2 = logDao.findAll(pageable);
+//       List<Comment> content = byAuthorIdNot.getContent();
+//       Sort sort = new Sort(Sort.Direction.DESC, "created");
+//       Pageable pageable = PageRequest.of(1-1, 2,sort);
+//       Page<Content> PageData = contentDao.findByType("post", pageable);
+//       Sort sort = new Sort(Sort.Direction.DESC, "created");
+//       Pageable pageable = PageRequest.of(0, 10, sort);
+//       Page<Content> contentList = contentDao.findByTypeOrStatus(Types.ARTICLE.getType(), Types.PUBLISH.getType(), pageable);
+//       new Page4Navigator<>(contentList, 5);
+//       contentDao.countByTypeAndSlug("")
+       Content content = new Content();
 
+       for (int i=0;i<10;i++) {
+           content.setCid(new IdWorker().nextId()+"");
+           content.setType("post");
+           content.setStatus(Types.PUBLISH.getType());
+           contentDao.save(content);
+       }
    }
 }

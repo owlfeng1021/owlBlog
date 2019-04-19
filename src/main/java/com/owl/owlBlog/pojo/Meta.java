@@ -58,6 +58,9 @@ public class Meta {
 
     private static final long serialVersionUID = 1L;
 
+    @Transient
+    private int count;
+
     public Meta() {
     }
 
@@ -69,6 +72,14 @@ public class Meta {
         this.description = description;
         this.sort = sort;
         this.parent = parent;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public List<Content> getContentList() {

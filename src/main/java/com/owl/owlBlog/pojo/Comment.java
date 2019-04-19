@@ -36,7 +36,7 @@ public class Comment implements Serializable {
     /**
      * 评论所属用户id
      */
-    private Integer authorId;
+    private String authorId;
 
     /**
      * 评论所属内容作者id
@@ -82,11 +82,15 @@ public class Comment implements Serializable {
      * 评论内容
      */
     private String content;
+    @Transient
+    private int levels;
+    @Transient
+    private List<Comment> children;
 
     public Comment() {
     }
 
-    public Comment(String coid, Content contents, Integer created, String author, Integer authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
+    public Comment(String coid, Content contents, Integer created, String author, String authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
         this.coid = coid;
         this.contents = contents;
         this.created = created;
@@ -101,6 +105,22 @@ public class Comment implements Serializable {
         this.status = status;
         this.parent = parent;
         this.content = content;
+    }
+
+    public int getLevels() {
+        return levels;
+    }
+
+    public void setLevels(int levels) {
+        this.levels = levels;
+    }
+
+    public List<Comment> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Comment> children) {
+        this.children = children;
     }
 
     public String getCoid() {
@@ -135,11 +155,11 @@ public class Comment implements Serializable {
         this.author = author;
     }
 
-    public Integer getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Integer authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 

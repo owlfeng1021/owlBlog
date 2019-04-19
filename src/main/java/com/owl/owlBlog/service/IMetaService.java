@@ -2,11 +2,16 @@ package com.owl.owlBlog.service;
 
 import com.owl.owlBlog.dao.MetaDao;
 import com.owl.owlBlog.dto.MetaDto;
+import com.owl.owlBlog.exception.TipException;
+import com.owl.owlBlog.pojo.Content;
 import com.owl.owlBlog.pojo.Meta;
+import com.owl.owlBlog.util.IdWorker;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.boot.Metadata;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +22,8 @@ import java.util.List;
 public class IMetaService {
     @Resource
     MetaDao metaDao;
+    @Resource
+    IContentService contentService;
     /**
      * 根据类型和名字查询项
      *
@@ -41,8 +48,19 @@ public class IMetaService {
      * @param types
      * @return
      */
-    List<Meta> getMetas(String types){
-        return null;
+    public List<Meta> getMetasByType(String type) {
+        List<Meta> byType = metaDao.findByType(type);
+
+        for (Meta metaDto: byType ) {
+            List<Content> contentList = metaDto.getContentList();
+            if (contentList!=null){
+                metaDto.setCount(contentList.size());
+            }else {
+                metaDto.setCount(0);
+            }
+        }
+        return byType;
+
     }
 
     /**
@@ -51,7 +69,19 @@ public class IMetaService {
      * @param names
      * @param type
      */
-    void saveMetas(Integer cid, String names, String type){
+    void saveMetas(String cid, String names, String type){
+        if (null == cid) {
+            throw new TipException("项目关联id不能为空");
+        }
+        Content content = contentService.getContents(cid);
+        ArrayList<Content> contentlist = new ArrayList<>();
+        contentlist.add(content);
+        if (StringUtils.isNotBlank(names) && StringUtils.isNotBlank(type)) {
+            String[] nameArr = StringUtils.split(names, ",");
+            for (String name : nameArr) {
+                this.saveOrUpdate(contentlist, name, type);
+            }
+        }
 
     }
     /**
@@ -92,9 +122,34 @@ public class IMetaService {
     public void update(Meta metas){
 
     }
-
-    public List<Meta> getMetasByType(String type) {
-        return metaDao.findByType(type);
-
+    // 保存
+    private void saveOrUpdate(List<Content> contentlist, String name, String type) {
+        List<Meta> metaVos = metaDao.findByTypeAndName(type,name);
+        Meta metas;
+        if (metaVos.size() == 1) {
+            metas = metaVos.get(0);
+            metas.setContentList(contentlist);
+            metaDao.save(metas);
+        } else if (metaVos.size() > 1) {
+            throw new TipException("查询到多条数据");
+        } else {
+            metas = new Meta();
+            metas.setMid(new IdWorker().nextId()+"");
+            metas.setSlug(name);
+            metas.setName(name);
+            metas.setType(type);
+            metas.setContentList(contentlist);
+            metaDao.save(metas);
+        }
+//        if (mid != 0) {
+//            Long count = relationshipService.countById(cid, mid);
+//            if (count == 0) {
+//                RelationshipVoKey relationships = new RelationshipVoKey();
+//                relationships.setCid(cid);
+//                relationships.setMid(mid);
+//                relationshipService.insertVo(relationships);
+//            }
+//        }
     }
+
 }

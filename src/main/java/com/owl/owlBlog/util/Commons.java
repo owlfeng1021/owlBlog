@@ -31,9 +31,9 @@ public final class Commons {
      * @param paginator
      * @return
      */
-//    public static boolean is_empty(PageInfo paginator) {
-//        return paginator == null || (paginator.getList() == null) || (paginator.getList().size() == 0);
-//    }
+    public static boolean is_empty(Page4Navigator paginator) {
+        return paginator == null || (paginator.getList() == null) || (paginator.getList().size() == 0);
+    }
 
     /**
      * 网站链接
@@ -133,8 +133,9 @@ public final class Commons {
      */
     public static String gravatar(String email) {
         String avatarUrl = "https://github.com/identicons/";
+        // 如果邮箱为空那么 就使用下面的邮箱
         if (StringUtils.isBlank(email)) {
-            email = "user@hanshuai.xin";
+            email = "1033571362@qq.com";
         }
         String hash = TaleUtils.MD5encode(email.trim().toLowerCase());
         return avatarUrl + hash + ".png";
@@ -147,7 +148,7 @@ public final class Commons {
      * @return
      */
     public static String permalink(Content contents) {
-        return permalink(Integer.parseInt(contents.getCid()), contents.getSlug());
+        return permalink(contents.getCid(), contents.getSlug());
     }
 
 
@@ -169,8 +170,8 @@ public final class Commons {
      * @param slug
      * @return
      */
-    public static String permalink(Integer cid, String slug) {
-        return site_url("/article/" + (StringUtils.isNotBlank(slug) ? slug : cid.toString()));
+    public static String permalink(String cid, String slug) {
+        return site_url("/article/" + (StringUtils.isNotBlank(slug) ? slug : cid));
     }
 
     /**
@@ -274,8 +275,11 @@ public final class Commons {
      * @return
      */
     public static String show_thumb(Content contents) {
-        int cid =Integer.parseInt(contents.getCid()) ;
-        int size = cid % 20;
+
+        String cid = contents.getCid();
+        String substring = cid.substring(8, 10);
+        int i = Integer.parseInt(substring);
+        int size =i%20;
         size = size == 0 ? 1 : size;
         return "/user/img/rand/" + size + ".jpg";
     }
@@ -325,8 +329,9 @@ public final class Commons {
      * @param cid
      * @return
      */
-    public static String show_icon(int cid) {
-        return ICONS[cid % ICONS.length];
+    public static String show_icon(String cid) {
+        String substring = cid.substring(7, 8);
+        return ICONS[Integer.parseInt(substring) % ICONS.length];
     }
 
     /**

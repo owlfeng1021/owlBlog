@@ -28,7 +28,7 @@
                             <th:block th:each="comment : ${comments.list}">
                                 <tr th:attr="cid=${comment.coid}">
                                     <td>
-                                        <a th:href="@{${commons.site_url('/article/')}+${comment.cid}+'#comments'}"
+                                        <a th:href="@{${commons.site_url('/article/')}+${comment.contents.cid}+'#comments'}"
                                            target="_blank" th:utext="${commons.article(comment.content)}"></a>
                                     </td>
                                     <td th:text="${comment.author}"></td>
@@ -59,7 +59,7 @@
                             </th:block>
                             </tbody>
                         </table>
-                        <div th:replace="comm/macros :: pageAdminNav(${comments})"></div>
+                        <!--<div th:replace="comm/macros :: pageAdminNav(${comments})"></div>-->
                     </div>
                 </div>
                 <div th:replace="admin/footer :: footer-content"></div>

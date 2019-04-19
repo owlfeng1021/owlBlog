@@ -29,7 +29,7 @@ public class Log {
     /**
      * 发生人id
      */
-    private Integer authorId;
+    private String authorId;
 
     /**
      * 日志产生的ip
@@ -44,7 +44,7 @@ public class Log {
     public Log() {
     }
 
-    public Log(String id, String action, String data, Integer authorId, String ip, Integer created) {
+    public Log(String id, String action, String data, String authorId, String ip, Integer created) {
         this.id = id;
         this.action = action;
         this.data = data;
@@ -77,11 +77,11 @@ public class Log {
         this.data = data;
     }
 
-    public Integer getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Integer authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 

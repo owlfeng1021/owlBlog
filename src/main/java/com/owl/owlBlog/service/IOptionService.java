@@ -5,6 +5,7 @@ import com.owl.owlBlog.pojo.Option;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class IOptionService {
@@ -13,5 +14,8 @@ public class IOptionService {
 
     public Option getOptionByName(String name){
         return  optionDao.findByName(name);
+    }
+    public List<Option> getOptionList(){
+        return  optionDao.findAll();
     }
 }

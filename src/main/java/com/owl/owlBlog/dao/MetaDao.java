@@ -8,6 +8,7 @@ import java.util.List;
 public interface MetaDao extends JpaRepository<Meta,String> {
       long countByType(String type);
       List<Meta> findByType(String type);
+      List<Meta> findByTypeAndName(String type,String name);
 //    long countByExample(MetaVoExample example);
 //
 //    int deleteByExample(MetaVoExample example);
