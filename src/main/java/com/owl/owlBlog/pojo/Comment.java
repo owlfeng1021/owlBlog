@@ -41,7 +41,7 @@ public class Comment implements Serializable {
     /**
      * 评论所属内容作者id
      */
-    private Integer ownerId;
+    private String ownerId;
 
     /**
      * 评论者邮件
@@ -90,7 +90,7 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
-    public Comment(String coid, Content contents, Integer created, String author, String authorId, Integer ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
+    public Comment(String coid, Content contents, Integer created, String author, String authorId, String ownerId, String mail, String url, String ip, String agent, String type, String status, Integer parent, String content) {
         this.coid = coid;
         this.contents = contents;
         this.created = created;
@@ -163,11 +163,11 @@ public class Comment implements Serializable {
         this.authorId = authorId;
     }
 
-    public Integer getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Integer ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 

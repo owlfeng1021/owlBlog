@@ -1,6 +1,6 @@
 package com.owl.owlBlog.Controller;
 
-import com.alibaba.druid.wall.violation.ErrorCode;
+import com.owl.owlBlog.dto.ErrorCode;
 import com.owl.owlBlog.bo.ArchiveBo;
 import com.owl.owlBlog.bo.CommentBo;
 import com.owl.owlBlog.bo.RestResponseBo;
@@ -15,6 +15,7 @@ import com.owl.owlBlog.service.IMetaService;
 import com.owl.owlBlog.service.SiteService;
 import com.owl.owlBlog.util.IPKit;
 import com.owl.owlBlog.util.Page4Navigator;
+import com.owl.owlBlog.util.PatternKit;
 import com.owl.owlBlog.util.TaleUtils;
 import com.sun.jarsigner.ContentSigner;
 import com.vdurmont.emoji.EmojiParser;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -73,7 +75,7 @@ public class IndexController extends BaseController{
         return this.render("index");
     }
     /**
-     * 文章页
+     * 文章页(预览)
      *
      * @param request 请求
      * @param cid     文章主键
@@ -87,7 +89,9 @@ public class IndexController extends BaseController{
         }
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
+        // comments 添加
         completeArticle(request, contents);
+
 //        if (!checkHitsFrequency(request, cid)) {
 //            updateArticleHit(contents.getCid(), contents.getHits());
 //        }
@@ -153,83 +157,99 @@ public class IndexController extends BaseController{
     /**
      * 评论操作
      */
-//    @PostMapping(value = "comment")
-//    @ResponseBody
-//    public RestResponseBo comment(HttpServletRequest request, HttpServletResponse response,
-//                                  @RequestParam Integer cid, @RequestParam Integer coid,
-//                                  @RequestParam String author, @RequestParam String mail,
-//                                  @RequestParam String url, @RequestParam String text, @RequestParam String _csrf_token) {
-//
-//        String ref = request.getHeader("Referer");
-//        if (StringUtils.isBlank(ref) || StringUtils.isBlank(_csrf_token)) {
-//            return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
-//        }
-//
-//        String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
-//        if (StringUtils.isBlank(token)) {
-//            return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
-//        }
-//
-//        if (null == cid || StringUtils.isBlank(text)) {
-//            return RestResponseBo.fail("请输入完整后评论");
-//        }
-//
-//        if (StringUtils.isNotBlank(author) && author.length() > 50) {
-//            return RestResponseBo.fail("姓名过长");
-//        }
-//
-//        if (StringUtils.isNotBlank(mail) && !TaleUtils.isEmail(mail)) {
-//            return RestResponseBo.fail("请输入正确的邮箱格式");
-//        }
-//
-//        if (StringUtils.isNotBlank(url) && !PatternKit.isURL(url)) {
-//            return RestResponseBo.fail("请输入正确的URL格式");
-//        }
-//
-//        if (text.length() > 200) {
-//            return RestResponseBo.fail("请输入200个字符以内的评论");
-//        }
-//
-//        String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
-//        Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
-//        if (null != count && count > 0) {
-//            return RestResponseBo.fail("您发表评论太快了，请过会再试");
-//        }
-//
-//        author = TaleUtils.cleanXSS(author);
-//        text = TaleUtils.cleanXSS(text);
-//
-//        author = EmojiParser.parseToAliases(author);
-//        text = EmojiParser.parseToAliases(text);
-//
-//        CommentVo comments = new CommentVo();
-//        comments.setAuthor(author);
-//        comments.setCid(cid);
-//        comments.setIp(request.getRemoteAddr());
-//        comments.setUrl(url);
-//        comments.setContent(text);
-//        comments.setMail(mail);
-//        comments.setParent(coid);
-//        try {
-//            String result = commentService.insertComment(comments);
-//            cookie("tale_remember_author", URLEncoder.encode(author, "UTF-8"), 7 * 24 * 60 * 60, response);
-//            cookie("tale_remember_mail", URLEncoder.encode(mail, "UTF-8"), 7 * 24 * 60 * 60, response);
-//            if (StringUtils.isNotBlank(url)) {
-//                cookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
-//            }
-//            // 设置对每个文章1分钟可以评论一次
-//            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 60);
-//            if (!WebConst.SUCCESS_RESULT.equals(result)) {
-//                return RestResponseBo.fail(result);
-//            }
-//            return RestResponseBo.ok();
-//        } catch (Exception e) {
-//            String msg = "评论发布失败";
-//            LOGGER.error(msg, e);
-//            return RestResponseBo.fail(msg);
-//        }
-//    }
+    @PostMapping(value = "comment")
+    @ResponseBody
+    public RestResponseBo comment(HttpServletRequest request, HttpServletResponse response,
+                                  @RequestParam String cid, @RequestParam Integer coid,
+                                  @RequestParam String author, @RequestParam String mail,
+                                  @RequestParam String url, @RequestParam String text, @RequestParam String _csrf_token) {
 
+        String ref = request.getHeader("Referer");
+        if (StringUtils.isBlank(ref) || StringUtils.isBlank(_csrf_token)) {
+            return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
+        }
+
+        String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
+        if (StringUtils.isBlank(token)) {
+            return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
+        }
+
+        if (null == cid || StringUtils.isBlank(text)) {
+            return RestResponseBo.fail("请输入完整后评论");
+        }
+
+        if (StringUtils.isNotBlank(author) && author.length() > 50) {
+            return RestResponseBo.fail("姓名过长");
+        }
+
+        if (StringUtils.isNotBlank(mail) && !TaleUtils.isEmail(mail)) {
+            return RestResponseBo.fail("请输入正确的邮箱格式");
+        }
+
+        if (StringUtils.isNotBlank(url) && !PatternKit.isURL(url)) {
+            return RestResponseBo.fail("请输入正确的URL格式");
+        }
+
+        if (text.length() > 200) {
+            return RestResponseBo.fail("请输入200个字符以内的评论");
+        }
+
+        String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
+        Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
+        if (null != count && count > 0) {
+            return RestResponseBo.fail("您发表评论太快了，请过会再试");
+        }
+
+        author = TaleUtils.cleanXSS(author);
+        text = TaleUtils.cleanXSS(text);
+
+        author = EmojiParser.parseToAliases(author);
+        text = EmojiParser.parseToAliases(text);
+
+        Content content = new Content();
+        content.setCid(cid);
+
+        Comment comments = new Comment();
+        comments.setAuthor(author);
+        comments.setContents(content);
+        comments.setIp(request.getRemoteAddr());
+        comments.setUrl(url);
+        comments.setContent(text);
+        comments.setMail(mail);
+        comments.setParent(coid);
+        try {
+            String result = commentService.insertComment(comments);
+            cookie("tale_remember_author", URLEncoder.encode(author, "UTF-8"), 7 * 24 * 60 * 60, response);
+            cookie("tale_remember_mail", URLEncoder.encode(mail, "UTF-8"), 7 * 24 * 60 * 60, response);
+            if (StringUtils.isNotBlank(url)) {
+                cookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
+            }
+            // 设置对每个文章1分钟可以评论一次
+            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 60);
+            if (!WebConst.SUCCESS_RESULT.equals(result)) {
+                return RestResponseBo.fail(result);
+            }
+            return RestResponseBo.ok();
+        } catch (Exception e) {
+            String msg = "评论发布失败";
+            LOGGER.error(msg, e);
+            return RestResponseBo.fail(msg);
+        }
+    }
+    /**
+     * 设置cookie
+     *
+     * @param name
+     * @param value
+     * @param maxAge
+     * @param response
+     */
+    private void cookie(String name, String value, int maxAge, HttpServletResponse response) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(maxAge);
+        cookie.setSecure(false);
+        response.addCookie(cookie);
+    }
     /**
      * 注销
      *

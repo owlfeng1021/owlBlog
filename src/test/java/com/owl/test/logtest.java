@@ -104,13 +104,14 @@ public class logtest {
 //       Page<Content> contentList = contentDao.findByTypeOrStatus(Types.ARTICLE.getType(), Types.PUBLISH.getType(), pageable);
 //       new Page4Navigator<>(contentList, 5);
 //       contentDao.countByTypeAndSlug("")
-       Content content = new Content();
+//       commentDao.findById("1119865101003870208").get()
 
-       for (int i=0;i<10;i++) {
-           content.setCid(new IdWorker().nextId()+"");
-           content.setType("post");
-           content.setStatus(Types.PUBLISH.getType());
-           contentDao.save(content);
-       }
+//       Sort sort = new Sort(Sort.Direction.DESC, "created");
+//       Pageable pageable = PageRequest.of(0, 10, sort);
+//       Page<Comment> parents = commentDao.findByContents_CidAndParentAndStatusAndStatusNotNull("1119129318059974656", 0, "approved", pageable);
+//       Page<Comment> parents2 = commentDao.findByContents("1119129318059974656", 0, "approved", pageable);
+//       Page<Comment> byC = commentDao.findByC("1119129318059974656", pageable);
+
+
    }
 }
