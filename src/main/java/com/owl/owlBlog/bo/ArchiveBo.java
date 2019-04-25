@@ -14,6 +14,20 @@ public class ArchiveBo implements Serializable {
     private String count;
     private List<Content> articles;
 
+    public ArchiveBo() {
+    }
+
+    public ArchiveBo(String date, String count) {
+        this.date = date;
+        this.count = count;
+    }
+
+    public ArchiveBo(String date, String count, List<Content> articles) {
+        this.date = date;
+        this.count = count;
+        this.articles = articles;
+    }
+
     public String getDate() {
         return date;
     }

@@ -15,7 +15,7 @@ public class Meta {
     @Id
     private String mid;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade ={CascadeType.MERGE,CascadeType.DETACH},fetch = FetchType.EAGER)// CascadeType.DETACH
     @JoinTable(name = "t_contents_metas",
             joinColumns = @JoinColumn(name = "mid"),
             inverseJoinColumns = @JoinColumn(name = "cid"))

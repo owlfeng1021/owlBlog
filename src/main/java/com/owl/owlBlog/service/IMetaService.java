@@ -90,7 +90,12 @@ public class IMetaService {
      * @param name
      * @param mid
      */
-    void saveMeta(String type, String name, Integer mid){
+  public void saveMeta(String type, String name, String mid){
+      Meta meta = new Meta();
+      meta.setMid(mid);
+      meta.setType(type);
+      meta.setName(name);
+      metaDao.save(meta);
 
     }
     /**
@@ -104,15 +109,15 @@ public class IMetaService {
      * 删除项目
      * @param mid
      */
-    void delete(int mid){
-
+    public void delete(String mid){
+        metaDao.deleteById(mid);
     }
     /**
      * 保存项目
      * @param metas
      */
-    void saveMeta(Meta metas){
-
+   public void saveMeta(Meta metas){
+       metaDao.save(metas);
     }
 
     /**
@@ -120,7 +125,7 @@ public class IMetaService {
      * @param metas
      */
     public void update(Meta metas){
-
+metaDao.save(metas);
     }
     // 保存
     private void saveOrUpdate(List<Content> contentlist, String name, String type) {

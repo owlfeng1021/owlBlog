@@ -95,7 +95,7 @@
                                         </button>
                                         <button type="button"
                                                 class="btn btn-danger btn-sm waves-effect waves-light m-t-5"
-                                                th:onclick="'delAttach('+${attach.id}+');'">
+                                                th:onclick="'delAttach(\''+${attach.id}+'\');'">
                                             <i class="fa fa-trash-o"></i> <span>删除</span>
                                         </button>
                                     </div>
@@ -133,7 +133,9 @@
             });
         }
     });
+    // 这是复制链接的js
     var clipboard = new Clipboard('button.copy', {
+        // 点击位置
         text: function (trigger) {
             return $(trigger).attr('url');
         }

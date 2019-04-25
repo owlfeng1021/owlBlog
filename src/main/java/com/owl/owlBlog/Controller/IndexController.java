@@ -1,8 +1,8 @@
 package com.owl.owlBlog.Controller;
 
-import com.owl.owlBlog.dto.ErrorCode;
 import com.owl.owlBlog.bo.ArchiveBo;
-import com.owl.owlBlog.bo.CommentBo;
+import com.owl.owlBlog.dto.ErrorCode;
+
 import com.owl.owlBlog.bo.RestResponseBo;
 import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.dto.Types;
@@ -92,9 +92,9 @@ public class IndexController extends BaseController{
         // comments 添加
         completeArticle(request, contents);
 
-//        if (!checkHitsFrequency(request, cid)) {
-//            updateArticleHit(contents.getCid(), contents.getHits());
-//        }
+        if (!checkHitsFrequency(request, cid)) {
+            updateArticleHit(contents.getCid(), contents.getHits());
+        }
         return this.render("post");
 
     }
@@ -267,9 +267,9 @@ public class IndexController extends BaseController{
      */
     @GetMapping(value = "archives")
     public String archives(HttpServletRequest request) {
-        List<Content> archives = siteService.getArchives();
+        List<ArchiveBo> archives = siteService.getArchives();
         request.setAttribute("archives", archives);
-        return this.render("archives");
+         return this.render("archives");
     }
 
     /**
@@ -283,5 +283,50 @@ public class IndexController extends BaseController{
         request.setAttribute("links", links);
         return this.render("links");
     }
+    /**
+     * 自定义页面,如关于的页面
+     */
+    @GetMapping(value = "/{pagename}")
+    public String page(@PathVariable String pagename, HttpServletRequest request) {
+        Content contents = contentService.getContents(pagename);
+        if (null == contents) {
+            return this.render_404();
+        }
+        if (contents.getAllowComment()) {
+            String cp = request.getParameter("cp");
+            if (StringUtils.isBlank(cp)) {
+                cp = "1";
+            }
+            Page4Navigator<Comment> commentsPaginator = commentService.getComments(contents.getCid(), Integer.parseInt(cp), 6);
+            request.setAttribute("comments", commentsPaginator);
+        }
+        request.setAttribute("article", contents);
+//        if (!checkHitsFrequency(request, String.valueOf(contents.getCid()))) {
+//            updateArticleHit(contents.getCid(), contents.getHits());
+//        }
+        return this.render("page");
+    }
 
+
+
+    /**
+     * 搜索页
+     *
+     * @param keyword
+     * @return
+     */
+    @GetMapping(value = "search/{keyword}")
+    public String search(HttpServletRequest request, @PathVariable String keyword, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+        return this.search(request, keyword, 1, limit);
+    }
+
+    @GetMapping(value = "search/{keyword}/{page}")
+    public String search(HttpServletRequest request, @PathVariable String keyword, @PathVariable int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
+        page = page < 0 || page > WebConst.MAX_PAGE ? 1 : page;
+        Page4Navigator<Content> articles = contentService.getArticles(keyword, page, limit);
+        request.setAttribute("articles", articles);
+        request.setAttribute("type", "搜索");
+        request.setAttribute("keyword", keyword);
+        return this.render("page-category");
+    }
 }

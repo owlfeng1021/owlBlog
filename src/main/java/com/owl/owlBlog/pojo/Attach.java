@@ -22,14 +22,14 @@ public class Attach implements Serializable {
     private String fkey;
 
 
-    private Integer authorId;
+    private String authorId;
 
     private Integer created;
 
     public Attach() {
     }
 
-    public Attach(String id, String fname, String ftype, String fkey, Integer authorId, Integer created) {
+    public Attach(String id, String fname, String ftype, String fkey, String authorId, Integer created) {
         this.id = id;
         this.fname = fname;
         this.ftype = ftype;
@@ -70,11 +70,11 @@ public class Attach implements Serializable {
         this.fkey = fkey;
     }
 
-    public Integer getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Integer authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 

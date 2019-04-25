@@ -1,47 +1,45 @@
 package com.owl.owlBlog.dao;
 
+
 import com.owl.owlBlog.pojo.Content;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ContentDao extends JpaRepository<Content,String> {
-      public Page<Content> findByType(String type, Pageable pageable);
+import java.util.List;
+import java.util.Map;
 
-      public Page<Content> findByTypeOrStatus(String type,String status, Pageable pageable);
+public interface ContentDao extends JpaRepository<Content, String> {
+    Page<Content> findByType(String type, Pageable pageable);
+
+    Page<Content> findByTitleLikeAndTypeAndStatus(String title, String type, String status, Pageable pageable);
+
+    List<Content> findByTitleLike(String title);
+
+    Page<Content> findByTypeAndStatus(String type, String status, Pageable pageable);
+
+    //      public List<Content> findByTypeOrStatus(String type, String status, Sort sort);
 //    SELECT count(*) FROM t_contents WHERE slug="1"and type="post"
-      public long countByTypeAndSlug(String type,String slug);
+    long countByTypeAndSlug(String type, String slug);
 
-//    long countByExample(ContentVoExample example);
-//
-//    int deleteByExample(ContentVoExample example);
-//
-//    int deleteByPrimaryKey(Integer cid);
-//
-//    int insert(ContentVo record);
-//
-//    int insertSelective(ContentVo record);
-//
-//    List<ContentVo> selectByExampleWithBLOBs(ContentVoExample example);
-//
-//    List<ContentVo> selectByExample(ContentVoExample example);
-//
-//    ContentVo selectByPrimaryKey(Integer cid);
-//
-//    int updateByExampleSelective(@Param("record") ContentVo record, @Param("example") ContentVoExample example);
-//
-//    int updateByExampleWithBLOBs(@Param("record") ContentVo record, @Param("example") ContentVoExample example);
-//
-//    int updateByExample(@Param("record") ContentVo record, @Param("example") ContentVoExample example);
-//
-//    int updateByPrimaryKeySelective(ContentVo record);
-//
-//    int updateByPrimaryKeyWithBLOBs(ContentVo record);
-//
-//    int updateByPrimaryKey(ContentVo record);
-//
-//    List<ArchiveBo> findReturnArchiveBo();
-//
-//    List<ContentVo> findByCatalog(Integer mid);
+    List<Content> findBySlug(String slug);
+
+
+    //        %Y 年, 数字, 4 位
+//        %m 月, 数字(01……12)
+    @Query(value = " SELECT FROM_UNIXTIME(created,'%Y年%m月') AS data ,count(*) AS count FROM t_contents " +
+            "WHERE type='post' and `status`='publish' GROUP BY data ORDER BY `data` DESC", nativeQuery = true)
+    List<Map> findbyArchive();
+
+    @Query(value = " SELECT FROM_UNIXTIME(created,'%Y年%m月') AS data ,count(*) AS count FROM t_contents " +
+            "WHERE type='post' and `status`='publish' GROUP BY data ORDER BY `data` DESC", nativeQuery = true)
+    List<Object> findbyArchiveBo();
+
+    @Query(value = " SELECT FROM_UNIXTIME(created,'%Y年%m月') AS data ,count(*) AS count FROM t_contents " +
+            "WHERE type='post' and `status`='publish' GROUP BY data ORDER BY `data` DESC", nativeQuery = true)
+    List<List<Object>> findbyArchiveBoList();
+
+    @Query(value = "SELECT * FROM t_contents WHERE type =?  AND `status`=?  and created > ? and created < ? ", nativeQuery = true)
+    List<Content> findByCreatedStartAndEnd(String type, String startus, Integer start, Integer end);
 }

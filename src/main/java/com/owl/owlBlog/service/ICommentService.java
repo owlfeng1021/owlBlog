@@ -1,7 +1,5 @@
 package com.owl.owlBlog.service;
 
-
-import com.owl.owlBlog.bo.CommentBo;
 import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.dao.CommentDao;
 import com.owl.owlBlog.pojo.Comment;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

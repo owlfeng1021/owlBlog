@@ -2,6 +2,7 @@ package com.owl.test;
 
 import com.owl.owlBlog.Application;
 
+import com.owl.owlBlog.bo.ArchiveBo;
 import com.owl.owlBlog.bo.StatisticsBo;
 import com.owl.owlBlog.dao.*;
 import com.owl.owlBlog.dto.Types;
@@ -29,6 +30,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -111,6 +113,16 @@ public class logtest {
 //       Page<Comment> parents = commentDao.findByContents_CidAndParentAndStatusAndStatusNotNull("1119129318059974656", 0, "approved", pageable);
 //       Page<Comment> parents2 = commentDao.findByContents("1119129318059974656", 0, "approved", pageable);
 //       Page<Comment> byC = commentDao.findByC("1119129318059974656", pageable);
+       contentDao.findByCreatedStartAndEnd("post", "publish", 1554048000, 1556726399);
+       Page<Content> PageData = contentDao.findByTitleLikeAndTypeAndStatus("3", Types.ARTICLE.getType(),Types.PUBLISH.getType(),null);
+       List<Content> byTitleLike = contentDao.findByTitleLike("%312asdfasd%");
+//
+
+
+
+
+
+
 
 
    }

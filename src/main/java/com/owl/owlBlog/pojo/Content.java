@@ -17,7 +17,7 @@ public class Content implements Serializable {
     private String cid;
 
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.DETACH},fetch = FetchType.EAGER)
     @JoinTable(name = "t_contents_metas",
             joinColumns = @JoinColumn(name = "cid"),
             inverseJoinColumns = @JoinColumn(name = "mid"))
@@ -101,6 +101,8 @@ public class Content implements Serializable {
     private String date;
     @Transient
     private String count;
+    @Transient
+    private List<Content> articles;
 
     private static final long serialVersionUID = 1L;
 

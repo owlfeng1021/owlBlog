@@ -352,12 +352,12 @@ public class TaleUtils {
         return false;
     }
 
+    // fileKey
     public static String getFileKey(String name) {
         String prefix = "/upload/" + DateKit.dateFormat(new Date(), "yyyy/MM");
         if (!new File(AttachController.CLASSPATH + prefix).exists()) {
             new File(AttachController.CLASSPATH + prefix).mkdirs();
         }
-
         name = StringUtils.trimToNull(name);
         if (name == null) {
             return prefix + "/" + UUID.UU32() + "." + null;

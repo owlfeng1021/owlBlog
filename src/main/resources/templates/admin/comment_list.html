@@ -44,7 +44,7 @@
                                             <span class="label label-default">未审核</span>
                                         </th:block>
                                     </td>
-                                    <td th:text="${comment.coid+'asdasd'}">A</td>
+                                        <!--<td th:text="@{/}">123123123123</td>-->
                                     <td>
 
                                         <th:block th:if="${comment.status == 'not_audit'}">
@@ -72,16 +72,15 @@
 
 <div th:replace="admin/footer :: footer"></div>
 
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
     var tale = new $.tale();
-
     function delComment(coid) {
-        alert(coid)
+        var ddd = [[@{/}]];
+            console.log(ddd);
         tale.alertConfirm({
             title: '确定删除该评论吗?',
             then: function () {
-                alert(coid)
                 tale.post({
                     url: '/admin/comments/delete',
                     data: {coid: coid},
