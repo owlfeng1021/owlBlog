@@ -19,6 +19,10 @@ import com.owl.owlBlog.util.PatternKit;
 import com.owl.owlBlog.util.TaleUtils;
 import com.sun.jarsigner.ContentSigner;
 import com.vdurmont.emoji.EmojiParser;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,8 @@ import javax.servlet.http.HttpSession;
 import java.awt.print.Pageable;
 import java.net.URLEncoder;
 import java.util.List;
+
+
 
 @Controller
 public class IndexController extends BaseController{
@@ -52,6 +58,10 @@ public class IndexController extends BaseController{
      *
      * @return
      */
+    @ApiOperation(value = "首页", notes = "测试方法")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "大小", required = true, paramType = "form"),
+    })
     @GetMapping(value = "/")
     public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         return this.index(request, 1, limit);
@@ -64,6 +74,10 @@ public class IndexController extends BaseController{
      * @param limit   每页大小
      * @return 主页
      */
+    @ApiOperation(value = "首页", notes = "测试方法")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "大小", required = true, paramType = "form"),
+    })
     @GetMapping(value = "page/{p}")
     public String index(HttpServletRequest request, @PathVariable int p, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         p = p < 0 || p > WebConst.MAX_PAGE ? 1 : p;
@@ -286,7 +300,7 @@ public class IndexController extends BaseController{
     /**
      * 自定义页面,如关于的页面
      */
-    @GetMapping(value = "/{pagename}")
+//    @GetMapping(value = "/{pagename}")
     public String page(@PathVariable String pagename, HttpServletRequest request) {
         Content contents = contentService.getContents(pagename);
         if (null == contents) {
