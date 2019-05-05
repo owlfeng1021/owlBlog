@@ -16,7 +16,7 @@ public class Content implements Serializable {
     @Id
     private String cid;
 
-
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler,","contentList"})
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.DETACH},fetch = FetchType.EAGER)
     @JoinTable(name = "t_contents_metas",
             joinColumns = @JoinColumn(name = "cid"),

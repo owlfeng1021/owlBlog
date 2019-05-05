@@ -1,5 +1,7 @@
 package com.owl.test;
 
+import com.github.qcloudsms.SmsSingleSender;
+import com.github.qcloudsms.SmsSingleSenderResult;
 import com.owl.owlBlog.Application;
 
 import com.owl.owlBlog.bo.ArchiveBo;
@@ -16,6 +18,7 @@ import com.owl.owlBlog.util.IdWorker;
 
 import com.owl.owlBlog.util.Page4Navigator;
 import com.owl.owlBlog.util.TaleUtils;
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +30,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import com.github.qcloudsms.SmsSingleSender;
+import com.github.qcloudsms.SmsSingleSenderResult;
+import com.github.qcloudsms.httpclient.HTTPException;
+import org.json.JSONException;
 
+import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -60,6 +69,8 @@ public class logtest {
 
    @Test
     public void test() {
+
+
 
 //       List<Comment> comments = siteService.recentComments(5);
 //       List<Content> contents = siteService.recentContents(5);
@@ -113,9 +124,9 @@ public class logtest {
 //       Page<Comment> parents = commentDao.findByContents_CidAndParentAndStatusAndStatusNotNull("1119129318059974656", 0, "approved", pageable);
 //       Page<Comment> parents2 = commentDao.findByContents("1119129318059974656", 0, "approved", pageable);
 //       Page<Comment> byC = commentDao.findByC("1119129318059974656", pageable);
-       contentDao.findByCreatedStartAndEnd("post", "publish", 1554048000, 1556726399);
-       Page<Content> PageData = contentDao.findByTitleLikeAndTypeAndStatus("3", Types.ARTICLE.getType(),Types.PUBLISH.getType(),null);
-       List<Content> byTitleLike = contentDao.findByTitleLike("%312asdfasd%");
+//       contentDao.findByCreatedStartAndEnd("post", "publish", 1554048000, 1556726399);
+//       Page<Content> PageData = contentDao.findByTitleLikeAndTypeAndStatus("3", Types.ARTICLE.getType(),Types.PUBLISH.getType(),null);
+//       List<Content> byTitleLike = contentDao.findByTitleLike("%312asdfasd%");
 //
 
 

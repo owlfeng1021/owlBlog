@@ -15,6 +15,8 @@ import com.owl.owlBlog.service.ILogService;
 import com.owl.owlBlog.service.IMetaService;
 import com.owl.owlBlog.util.IdWorker;
 import com.owl.owlBlog.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/article")
 @Transactional(rollbackFor = TipException.class)
+@Api(tags = "文章控制器")
 public class ArticleController extends BaseController {
     private static final Logger LOGGER =  LoggerFactory.getLogger(ArticleController.class);
     @Resource
@@ -40,6 +43,8 @@ public class ArticleController extends BaseController {
     private IContentService contentService;
     @Resource
     private IdWorker idWorker;
+
+    @ApiOperation(value = "获取所有文章", notes = "查询分页数据")
     @GetMapping(value = "")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page,
                         @RequestParam(value = "limit", defaultValue = "15") int limit,

@@ -20,6 +20,7 @@ public class Comment implements Serializable {
      * post表主键,关联字段
      */
     @ManyToOne
+
     @JoinColumn(name = "cid")
     private Content contents;
 

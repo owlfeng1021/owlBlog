@@ -14,8 +14,9 @@ public class Meta {
      */
     @Id
     private String mid;
-
+//metaList
     @ManyToMany(cascade ={CascadeType.MERGE,CascadeType.DETACH},fetch = FetchType.EAGER)// CascadeType.DETACH
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler,","metaList"})
     @JoinTable(name = "t_contents_metas",
             joinColumns = @JoinColumn(name = "mid"),
             inverseJoinColumns = @JoinColumn(name = "cid"))
