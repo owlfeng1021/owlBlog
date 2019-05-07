@@ -1,3 +1,65 @@
 body{
     font-size: 15px;
+    /*padding-top: 50px;*/
+    background:url("https://view.moezx.cc/images/2018/01/03/sakura.png");
+}
+.articleBox{
+    height:140px;
+    width: 200px;
+    background-color: #d491e6;
+    float: left;
+    margin:0 auto ;
+
+}
+.articleBoxImg{
+    height:140px;
+    width: 200px;
+}
+#navbar{
+    margin-left: 1px;
+    border-radius: 5px ;
+    border:2px solid #000;
+    background-color: #feefe9;
+    height: 80px;
+    position:fixed;
+    z-index:999;
+}
+#navbar li{
+    float: left;
+    margin-right: 0px;
+
+
+}
+#navbar img{
+    width:150px;
+    height:60px;
+}
+/**/
+#box{
+    margin-top: 80px;
+    text-align: left;
+    border:1px solid #000;
+    display: block;
+}
+.articleBox{
+    height: 240px;
+    border-radius: 5px ;
+}
+/**/
+
+.moveTop{
+    margin-top: 80px;
+}
+.main-content{
+    border:1px solid #000;
+    margin-top: 80px;
+    background-color:#999999 ;
+}
+/**/
+
+
+.footer-meta{
+    float: left;
+    border:1px solid #000;
+
 }

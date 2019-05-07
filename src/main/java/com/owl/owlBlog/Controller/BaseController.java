@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class BaseController {
 
-//    public static String THEME = "themes/default";
-    public static String THEME = "themes/owlfeng";
+    public static String THEME = "themes/default";
+//    public static String THEME = "themes/owlfeng";
 
     protected MapCache cache = MapCache.single();
 
@@ -35,6 +35,8 @@ public abstract class BaseController {
         request.setAttribute("keywords", keywords);
         return this;
     }
+
+
 
     /**
      * 获取请求绑定的登录对象

@@ -3,12 +3,45 @@
 
 <div th:replace="themes/owlfeng/header::header"></div>
 <body>
-    <div id="box">
-    <!--<span v-text="articles"></span>-->
-    <!--<span> {{ articles.list }}</span>-->
-        <!--${articles}-->
-        中间的内容
+
+    <div id="box" class="col-sm-8 col-lg-8 col-sm-8 col-md-offset-2 col-lg-offset-2" >
+        <div v-for="article in articles" class="articleBox col-sm-10 col-lg-10 col-md-offset-1 col-lg-offset-1 " :style="'background-image:url('+'/user/img/rand/'+GetRandomNum(1,20)+'.jpg'+');'">
+            <div >
+                <a class="articleBoxImg" :href="uri+'article'+'/'+article.cid" >{{article.title}}</a>
+                <div >{{article.tags}}</div>
+                <a :href="uri+'article'+'/'+article.cid">{{article.title}}</a>
+                <div >{{article.tags}}</div>
+
+            </div>
+        </div>
     </div>
+    <script th:inline="javascript">
+        var vm = new Vue({
+            el:"#box",
+            data:{
+                articles:/*[[${articles.list}]]*/[],
+                uri:/*[[@{/}]]*/'',
+                data:{}
+            },
+            created:function(){
+                console.log(this.articles)
+            },
+            mounted(){
+                this.init()
+            },
+            methods:{
+                init(){
+                    console.log("初始化")
+
+                },
+                GetRandomNum(Min, Max) {
+                const Range = Max - Min;
+                const Rand = Math.random();
+                return(Min + Math.round(Rand * Range));
+                }
+            }
+        })
+    </script>
     <div th:replace="themes/owlfeng/footer::footer"></div>
 </body>
 
