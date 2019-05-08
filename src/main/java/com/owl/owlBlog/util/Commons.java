@@ -1,6 +1,7 @@
 package com.owl.owlBlog.util;
 
 
+import com.owl.owlBlog.bo.RestResponseBo;
 import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.pojo.Content;
 import com.vdurmont.emoji.EmojiParser;
@@ -347,6 +348,18 @@ public final class Commons {
         map.put("github", WebConst.initConfig.get(prefix + "github"));
         map.put("twitter", WebConst.initConfig.get(prefix + "twitter"));
         return map;
+    }
+
+    /**
+     * 把返回值进行比较 返回操作状态
+     * @param result
+     * @return
+     */
+    public static RestResponseBo returnStatus(String result){
+        if (!WebConst.SUCCESS_RESULT.equals(result)) {
+            return RestResponseBo.fail(result);
+        }
+        return RestResponseBo.ok();
     }
 
 }

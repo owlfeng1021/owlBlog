@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import static com.owl.owlBlog.util.Commons.returnStatus;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,7 @@ public class ArticleController extends BaseController {
         return "admin/article_edit";
     }
     // 上传文章
+    // 修改文章
     @PostMapping(value = "/publish")
     @ResponseBody
     public RestResponseBo publishArticle(Content contents, HttpServletRequest request) {
@@ -82,33 +84,14 @@ public class ArticleController extends BaseController {
             contents.setCategories("默认分类");
         }
         String result = contentService.publish(contents);
-        if (!WebConst.SUCCESS_RESULT.equals(result)) {
-            return RestResponseBo.fail(result);
-        }
-        return RestResponseBo.ok();
+        return returnStatus(result);
     }
-    @PostMapping(value = "/modify")
-    @ResponseBody
-    public RestResponseBo modifyArticle(Content contents, HttpServletRequest request) {
-        User users = this.user(request);
-        contents.setAuthorId(users.getUid());
-        contents.setType(Types.ARTICLE.getType());
-        String result = contentService.updateArticle(contents);
-        if (!WebConst.SUCCESS_RESULT.equals(result)) {
-            return RestResponseBo.fail(result);
-        }
-        return RestResponseBo.ok();
-    }
-
     @RequestMapping(value = "/delete")
     @ResponseBody
     public RestResponseBo delete(@RequestParam String cid, HttpServletRequest request) {
         String result = contentService.deleteByCid(cid);
         logService.insertLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
-        if (!WebConst.SUCCESS_RESULT.equals(result)) {
-            return RestResponseBo.fail(result);
-        }
-        return RestResponseBo.ok();
+        return returnStatus(result);
     }
 
 }

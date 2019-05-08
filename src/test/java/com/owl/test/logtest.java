@@ -1,46 +1,24 @@
 package com.owl.test;
 
-import com.github.qcloudsms.SmsSingleSender;
-import com.github.qcloudsms.SmsSingleSenderResult;
 import com.owl.owlBlog.Application;
 
-import com.owl.owlBlog.bo.ArchiveBo;
-import com.owl.owlBlog.bo.StatisticsBo;
+import com.owl.owlBlog.config.DefaultData;
 import com.owl.owlBlog.dao.*;
-import com.owl.owlBlog.dto.Types;
 import com.owl.owlBlog.pojo.*;
 import com.owl.owlBlog.service.ILogService;
 import com.owl.owlBlog.service.IOptionService;
 import com.owl.owlBlog.service.IUserService;
 import com.owl.owlBlog.service.SiteService;
 import com.owl.owlBlog.util.Commons;
-import com.owl.owlBlog.util.IdWorker;
 
-import com.owl.owlBlog.util.Page4Navigator;
-import com.owl.owlBlog.util.TaleUtils;
-import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import com.github.qcloudsms.SmsSingleSender;
-import com.github.qcloudsms.SmsSingleSenderResult;
-import com.github.qcloudsms.httpclient.HTTPException;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -67,6 +45,15 @@ public class logtest {
     @Resource
     LogDao logDao;
 
+    @Resource
+    DefaultData defaultUser;
+    @Test
+    public void checkEmpty() {
+        List<User> all = userDao.findAll();
+        User user = defaultUser.getUser();
+
+
+    }
    @Test
     public void test() {
 

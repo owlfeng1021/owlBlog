@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.owl.owlBlog.config.DefaultData",
+      "name": "default",
+      "type": "com.owl.owlBlog.config.DefaultData"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.owl.owlBlog.config.DefaultData",
+      "name": "default.user",
+      "type": "com.owl.owlBlog.pojo.User"
+    }
+  ]
+}

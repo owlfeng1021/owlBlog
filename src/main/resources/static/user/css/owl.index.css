@@ -6,19 +6,13 @@ body{
 .articleBox{
     height:140px;
     width: 200px;
-    background-color: #d491e6;
     float: left;
     margin:0 auto ;
 
 }
-.articleBoxImg{
-    height:140px;
-    width: 200px;
-}
 #navbar{
-    margin-left: 1px;
     border-radius: 5px ;
-    border:2px solid #000;
+    /*border:2px solid #000;*/
     background-color: #feefe9;
     height: 80px;
     position:fixed;
@@ -26,32 +20,112 @@ body{
 }
 #navbar li{
     float: left;
-    margin-right: 0px;
-
-
 }
 #navbar img{
     width:150px;
     height:60px;
 }
 /**/
-#box{
-    margin-top: 80px;
-    text-align: left;
-    border:1px solid #000;
+
+/**/
+
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+}
+/**/
+.time {
+    font-size: 13px;
+    color: #999;
+}
+
+.bottom {
+    margin-top: 13px;
+    line-height: 12px;
+}
+
+.button {
+    padding: 0;
+    float: right;
+}
+
+.image {
+    width: 100%;
     display: block;
 }
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
+}
+/**/
+#box{
+    margin-top: 80px;
+    text-align: center;
+    /*border:1px solid #000;*/
+    display: block;
+    /*height: 1000px ;*/
+    background-color: #feefe9;
+
+}
+#firstBox~div{ /*选择一个元素之后的所有同级元素*/
+    margin-top: 10px;
+}
+
 .articleBox{
     height: 240px;
     border-radius: 5px ;
+    float: left;height:240px ;
+    box-shadow:5px 5px 5px 5px #444;
+    -moz-box-shadow:5px 5px 5px 5px #444;
+    -webkit-box-shadow:5px 5px 5px 5px#444;
+    padding:0px!important
+
 }
+.articleBoxText{
+    float: left;
+    padding-right: 0px;
+    padding-left: 0px;
+
+}
+.articleBoxImg{
+    float: left;
+    height:240px ;
+    display: block;
+    padding-right: 0px;
+    padding-left: 0px;
+
+     max-width: 100%;
+    /*box-shadow:10px 10px 5px #444;*/
+    /*-moz-box-shadow:10px 10px 5px #444;*/
+    /*-webkit-box-shadow:10px 10px 5px #444;*/
+}
+
+
 /**/
 
 .moveTop{
     margin-top: 80px;
+
 }
 .main-content{
-    border:1px solid #000;
+    /*border:1px solid #000;*/
     margin-top: 80px;
     background-color:#999999 ;
 }
@@ -59,7 +133,10 @@ body{
 
 
 .footer-meta{
+    margin-top: 11px;
+    background-color: #feefe9;
     float: left;
-    border:1px solid #000;
+    height: 64px;
+    /*border:1px solid #000;*/
 
 }

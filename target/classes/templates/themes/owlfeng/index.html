@@ -3,46 +3,106 @@
 
 <div th:replace="themes/owlfeng/header::header"></div>
 <body>
+<div class="container">
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div id="box">
 
-    <div id="box" class="col-sm-8 col-lg-8 col-sm-8 col-md-offset-2 col-lg-offset-2" >
-        <div v-for="article in articles" class="articleBox col-sm-10 col-lg-10 col-md-offset-1 col-lg-offset-1 " :style="'background-image:url('+'/user/img/rand/'+GetRandomNum(1,20)+'.jpg'+');'">
-            <div >
-                <a class="articleBoxImg" :href="uri+'article'+'/'+article.cid" >{{article.title}}</a>
-                <div >{{article.tags}}</div>
-                <a :href="uri+'article'+'/'+article.cid">{{article.title}}</a>
-                <div >{{article.tags}}</div>
+            <el-carousel indicator-position="outside">
+                <el-carousel-item v-for="item in items" :key="item">
+                    <h3>{{ item }}</h3>
+                </el-carousel-item>
+            </el-carousel>
+
+        <el-row>
+            <el-col class="col-lg-4" :span="8" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
+                <el-card :body-style="{ padding: '0px' }">
+                    <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+                    <div style="padding: 14px;">
+                        <span>好吃的汉堡</span>
+                        <div class="bottom clearfix">
+                            <time class="time">{{ currentDate }}</time>
+                            <el-button type="text" class="button">操作按钮</el-button>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+
+        <div class="col-sm-8 col-lg-8 col-sm-8 col-xs-12 col-md-offset-2 col-lg-offset-2 col-sm-offset-2">
+            <div id="firstBox" v-for="(article,index) in articles"
+                 class="articleBox col-xs-12 col-sm-12 col-lg-12 col-sm-12  ">
+
+                <div v-if="odd(index)">
+                    <div class="articleBoxText col-xs-6 col-md-2  col-lg-5  col-sm-6">
+                        <a :href="uri+'article'+'/'+article.cid">{{article.title}}</a>
+                        <div>{{article.tags}}</div>
+                        <a :href="uri+'article'+'/'+article.cid">{{article.title}}</a>
+                        <div>{{article.tags}}</div>
+                    </div>
+                    <div class="articleBoxImg  img-rounded  col-xs-6 col-md-6  col-lg-7  col-sm-6"
+                         :style="'background-image:url('+'/user/img/rand/'+GetRandomNum(1,19)+'.jpg'+');'">
+                    </div>
+                </div>
+
+                <div v-else>
+                    <div class="articleBoxImg  img-rounded col-xs-6 col-md-6  col-lg-7  col-sm-6"
+                         :style="'background-image:url('+'/user/img/rand/'+GetRandomNum(1,19)+'.jpg'+');'">
+                    </div>
+                    <div class="articleBoxText col-md-2 col-xs-6 col-lg-5  col-sm-6">
+                        <a :href="uri+'article'+'/'+article.cid">{{article.title}}</a>
+                        <div>{{article.tags}}</div>
+                        <a :href="uri+'article'+'/'+article.cid">{{article.title}}</a>
+                        <div>{{article.tags}}</div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
     </div>
-    <script th:inline="javascript">
-        var vm = new Vue({
-            el:"#box",
-            data:{
-                articles:/*[[${articles.list}]]*/[],
-                uri:/*[[@{/}]]*/'',
-                data:{}
-            },
-            created:function(){
-                console.log(this.articles)
-            },
-            mounted(){
-                this.init()
-            },
-            methods:{
-                init(){
-                    console.log("初始化")
+</div>
 
-                },
-                GetRandomNum(Min, Max) {
+
+<script th:inline="javascript">
+    // 全局注册组件
+
+
+    var vm = new Vue({
+        el: "#box",
+        data: {
+            articles:/*[[${articles.list}]]*/[],
+            uri:/*[[@{/}]]*/'',
+            items:["https://view.moezx.cc/images/2018/01/03/sakura.png"]
+        },
+        created: function () {
+            console.log(this.articles)
+
+        },
+        mounted() {
+            this.init()
+        },
+        methods: {
+            init() {
+                console.log("初始化")
+            },
+            GetRandomNum(Min, Max) {
                 const Range = Max - Min;
                 const Rand = Math.random();
-                return(Min + Math.round(Rand * Range));
-                }
+                return (Min + Math.round(Rand * Range));
+            },
+            odd(index) {
+                console.log(index % 2 === 1);
+                return index % 2 === 1;
+            },data() {
+                return {
+                    currentDate: new Date()
+                };
             }
-        })
-    </script>
-    <div th:replace="themes/owlfeng/footer::footer"></div>
+
+        }
+    })
+</script>
+<div th:replace="themes/owlfeng/footer::footer"></div>
 </body>
 
 </html>

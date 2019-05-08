@@ -3,8 +3,8 @@
 <body>
 <footer>
     <div id="aplayer" ></div>
-    <div class="footer-meta col-sm-12 col-lg-12 col-sm-12">
-        <div class="footer-container col-sm-8 col-lg-8 col-sm-8 col-md-offset-4 col-lg-offset-4">
+    <div class="footer-meta col-sm-12 col-lg-12 col-sm-12  col-xs-12  ">
+        <div class="footer-container col-sm-8 col-lg-6 col-sm-8  col-xs-8 col-md-offset-5 col-lg-offset-5 col-xs-offset-3">
             <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
             <script>
                 let vm3 = new Vue({
@@ -49,10 +49,10 @@
                 <div class="meta-copyright-info">
                     <div class="info-text">
 
-                        <a href="http://www.owlfeng.cn" class="info-logo">
-                            <img th:src="@{/user/img/logo.png}"
-                                 th:alt="${commons.site_title()}"/>
-                        </a>
+                        <!--<a href="http://www.owlfeng.cn" class="info-logo">-->
+                            <!--<img th:src="@{/user/img/logo.png}"-->
+                                 <!--th:alt="${commons.site_title()}" class="img-rounded"/>-->
+                        <!--</a>-->
                         <br/>
 
 
@@ -67,5 +67,6 @@
         </div>
     </div>
 </footer>
+
 </body>
 </html>

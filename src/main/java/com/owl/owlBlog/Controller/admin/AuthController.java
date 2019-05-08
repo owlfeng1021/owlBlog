@@ -36,7 +36,14 @@ public class AuthController extends BaseController {
     private ILogService logService;
 
     @GetMapping(value = "/login")
-    public String login() {
+    public String login( HttpServletRequest request,
+                         HttpServletResponse response) {
+        //            判断是否有用户 没有就添加进去
+        if (usersService.checkEmpty()) {
+            // 计划添加一个配置页面
+            logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), null);
+//            if (usersService.)
+        }
         return "admin/login";
     }
 
@@ -50,14 +57,15 @@ public class AuthController extends BaseController {
         // 把错误次数加入缓存 可以使用其他缓存
         Integer error_count = cache.get("login_error_count");
         try {
-            User user = usersService.login(username, password);
-            // 把用户加入缓存
-            request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
-            if (StringUtils.isNotBlank(remeber_me)) {
-                TaleUtils.setCookie(response,Integer.parseInt(user.getUid()));
-            }
-            // 记录登录操作
-            logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(),user.getUid());
+
+                User user = usersService.login(username, password);
+                // 把用户加入缓存
+                request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
+                if (StringUtils.isNotBlank(remeber_me)) {
+                    TaleUtils.setCookie(response, user.getUid());
+                }
+                // 记录登录操作
+                logService.insertLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), user.getUid());
         } catch (Exception e) {
             error_count = null == error_count ? 1 : error_count + 1;
             if (error_count > 3) {

@@ -46,7 +46,7 @@ public class IContentService {
      *
      * @param contents
      */
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "contents", allEntries = true)
     public String publish(Content contents) {
         if (null == contents) {
             return "文章对象为空";
@@ -87,7 +87,10 @@ public class IContentService {
         contents.setModified(time);
         contents.setHits(0);
         contents.setCommentsNum(0);
-        contents.setCid(idWorker.nextId()+"");
+        if (contents.getCid() != null && contents.getCid() != "")
+        {
+            contents.setCid(idWorker.nextId() + "");
+        }
 
         String tags = contents.getTags();
         String categories = contents.getCategories();
@@ -124,16 +127,15 @@ public class IContentService {
      * @param id id
      * @return ContentVo
      */
-    @Cacheable(key="#p0")
+    @Cacheable(key = "#p0")
     public Content getContents(String id) {
-        if (StringUtils.isNotBlank(id)){
+        if (StringUtils.isNotBlank(id)) {
             if (Tools.isNumber(id)) {
                 Content content = contentDao.findById(id).get();
-                return  content;
-            }
-            else{
+                return content;
+            } else {
                 List<Content> content = contentDao.findBySlug(id);
-                if (content.size()!=1){
+                if (content.size() != 1) {
                     throw new TipException("查询结果不为一");
                 }
                 return content.get(0);
@@ -148,7 +150,7 @@ public class IContentService {
      *
      * @param contentVo contentVo
      */
-    @CacheEvict(key="#p0.cid")
+    @CacheEvict(value = "contents", allEntries = true)
     public void updateContentByCid(Content content) {
         contentDao.save(content);
     }
@@ -178,7 +180,7 @@ public class IContentService {
     public Page4Navigator<Content> getArticles(String keyword, Integer page, Integer limit) {
         Sort sort = new Sort(Sort.Direction.DESC, "created");
         Pageable pageable = PageRequest.of(page - 1, limit, sort);
-        Page<Content> PageData = contentDao.findByTitleLikeAndTypeAndStatus("%"+keyword+"%", Types.ARTICLE.getType(),Types.PUBLISH.getType(),pageable);
+        Page<Content> PageData = contentDao.findByTitleLikeAndTypeAndStatus("%" + keyword + "%", Types.ARTICLE.getType(), Types.PUBLISH.getType(), pageable);
         return new Page4Navigator<Content>(PageData, limit);
     }
 
@@ -189,7 +191,7 @@ public class IContentService {
      * @param limit
      * @return
      */
-    @Cacheable(value = "adminpage",key = "#p0+#p1+#p3")
+    @Cacheable(key = "#p0+#p1+#p3")
     public Page4Navigator<Content> getArticlesWithpage(String type, int page, int limit) {
         Sort sort = new Sort(Sort.Direction.DESC, "created");
         Pageable pageable = PageRequest.of(page - 1, limit, sort);
@@ -204,8 +206,8 @@ public class IContentService {
      * @param cid
      */
 
-    @CacheEvict(allEntries = true)
-    public  String deleteByCid(String cid) {
+    @CacheEvict(value = "contents", allEntries = true)
+    public String deleteByCid(String cid) {
         contentDao.deleteById(cid);
         return WebConst.SUCCESS_RESULT;
     }
@@ -215,10 +217,9 @@ public class IContentService {
      *
      * @param contents
      */
-    @CacheEvict(allEntries = true)
+    @CacheEvict(value = "contents", allEntries = true)
     public String updateArticle(Content contents) {
         contentDao.save(contents);
-
         return WebConst.SUCCESS_RESULT;
     }
 

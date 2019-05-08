@@ -199,9 +199,9 @@ public class TaleUtils {
      * @param response
      * @param uid
      */
-    public static void setCookie(HttpServletResponse response, Integer uid) {
+    public static void setCookie(HttpServletResponse response, String uid) {
         try {
-            String val = Tools.enAes(uid.toString(), WebConst.AES_SALT);
+            String val = Tools.enAes(uid, WebConst.AES_SALT);
             boolean isSSL = false;
             Cookie cookie = new Cookie(WebConst.USER_IN_COOKIE, val);
             cookie.setPath("/");
