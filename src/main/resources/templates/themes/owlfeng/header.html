@@ -21,8 +21,6 @@
     <!-- 引入elementui样式 -->
     <link href="https://cdn.bootcss.com/element-ui/2.8.2/theme-chalk/index.css" rel="stylesheet">
     <!-- 引入elementui组件库 -->
-    <script src="https://cdn.bootcss.com/element-ui/2.8.2/index.js"></script>
-
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -52,6 +50,9 @@
                 <div >
                     <span class="mini-stat-icon"><i class="fa fa-font-awesome" aria-hidden="true"></i></span> 在线人数<span class="counter" th:text="${application.online_number}">0</span>人
                 </div>
+            </li>
+            <li>
+                <i class="fa fa-rss" aria-hidden="true"> <a href="/rss">订阅网站rss</a></i>
             </li>
 
         </ul>

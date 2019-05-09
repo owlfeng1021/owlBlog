@@ -57,7 +57,8 @@ public class logtest {
    @Test
     public void test() {
 
-
+//       contentDao.findByTypeAndStatusOrderByCreatedDesc(p)
+//       contentDao.findByTypeAndStatusOrderByCreatedDesc(p)
 
 //       List<Comment> comments = siteService.recentComments(5);
 //       List<Content> contents = siteService.recentContents(5);
@@ -115,6 +116,7 @@ public class logtest {
 //       Page<Content> PageData = contentDao.findByTitleLikeAndTypeAndStatus("3", Types.ARTICLE.getType(),Types.PUBLISH.getType(),null);
 //       List<Content> byTitleLike = contentDao.findByTitleLike("%312asdfasd%");
 //
+
 
 
 

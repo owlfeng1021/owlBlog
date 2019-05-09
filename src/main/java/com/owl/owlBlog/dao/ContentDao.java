@@ -18,6 +18,7 @@ public interface ContentDao extends JpaRepository<Content, String> {
     List<Content> findByTitleLike(String title);
 
     Page<Content> findByTypeAndStatus(String type, String status, Pageable pageable);
+    List<Content> findByTypeAndStatusOrderByCreatedDesc(String type, String status);
 
     //      public List<Content> findByTypeOrStatus(String type, String status, Sort sort);
 //    SELECT count(*) FROM t_contents WHERE slug="1"and type="post"

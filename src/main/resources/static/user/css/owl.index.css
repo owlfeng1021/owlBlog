@@ -28,12 +28,11 @@ body{
 /**/
 
 /**/
-
 .el-carousel__item h3 {
     color: #475669;
     font-size: 18px;
     opacity: 0.75;
-    line-height: 300px;
+
     margin: 0;
 }
 
@@ -44,40 +43,22 @@ body{
 .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
 }
+
 /**/
-.time {
-    font-size: 13px;
-    color: #999;
+
+/*关于文章的内容*/
+hr{
+
+}
+.discovery{
+
 }
 
-.bottom {
-    margin-top: 13px;
-    line-height: 12px;
-}
 
-.button {
-    padding: 0;
-    float: right;
-}
-
-.image {
-    width: 100%;
-    display: block;
-}
-
-.clearfix:before,
-.clearfix:after {
-    display: table;
-    content: "";
-}
-
-.clearfix:after {
-    clear: both
-}
-/**/
 #box{
-    margin-top: 80px;
-    text-align: center;
+    font-family: Ubuntu, sans-serif;
+
+    /*text-align: center;*/
     /*border:1px solid #000;*/
     display: block;
     /*height: 1000px ;*/
@@ -110,13 +91,12 @@ body{
     display: block;
     padding-right: 0px;
     padding-left: 0px;
-
      max-width: 100%;
     /*box-shadow:10px 10px 5px #444;*/
     /*-moz-box-shadow:10px 10px 5px #444;*/
     /*-webkit-box-shadow:10px 10px 5px #444;*/
 }
-
+/*关于文章的内容*/
 
 /**/
 

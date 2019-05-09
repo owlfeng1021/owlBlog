@@ -81,7 +81,6 @@ public class IContentService {
             contents.setSlug(null);
         }
         contents.setContent(EmojiParser.parseToAliases(contents.getContent()));
-
         int time = DateKit.getCurrentUnixTime();
         contents.setCreated(time);
         contents.setModified(time);
@@ -157,15 +156,12 @@ public class IContentService {
 
 
     /**
-     * 查询分类/标签下的文章归档
+     * 发布rss的文章
      *
-     * @param mid   mid
-     * @param page  page
-     * @param limit limit
-     * @return ContentVo
+     * @return Content
      */
-    Page4Navigator<Content> getArticles(Integer mid, int page, int limit) {
-        return null;
+   public  List<Content> getRssArticles() {
+        return contentDao.findByTypeAndStatusOrderByCreatedDesc(Types.ARTICLE.getType(),Types.PUBLISH.getType());
     }
 
     /**

@@ -123,6 +123,13 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.32</version>
         </dependency>
+        <!--关于rss订阅的 操作-->
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
     </dependencies>
     <repositories>
         <repository>

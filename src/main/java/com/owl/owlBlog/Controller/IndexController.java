@@ -1,6 +1,7 @@
 package com.owl.owlBlog.Controller;
 
 import com.owl.owlBlog.bo.ArchiveBo;
+import com.owl.owlBlog.bo.IndexBo;
 import com.owl.owlBlog.dto.ErrorCode;
 
 import com.owl.owlBlog.bo.RestResponseBo;
@@ -343,4 +344,16 @@ public class IndexController extends BaseController{
         request.setAttribute("keyword", keyword);
         return this.render("page-category");
     }
+
+    @GetMapping(value = "getOption")
+    public List<IndexBo> indexPhoto(){
+        IndexBo indexBo = new IndexBo();
+
+
+//        indexBo.setImages();
+//        indexBo.setTitleImages();
+        return null;
+
+    }
+
 }
