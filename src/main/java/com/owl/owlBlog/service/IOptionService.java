@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IOptionService {
@@ -17,5 +18,12 @@ public class IOptionService {
     }
     public List<Option> getOptionList(){
         return  optionDao.findAll();
+    }
+    public  void saveOption(Map<String,String> data){
+        data.forEach((key,value)->{
+            optionDao.saveOption(key,value);
+        });
+
+
     }
 }

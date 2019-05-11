@@ -1,14 +1,18 @@
 package com.owl.owlBlog.Controller.admin;
 
+import com.owl.owlBlog.Controller.BaseController;
+import com.owl.owlBlog.bo.RestResponseBo;
+import com.owl.owlBlog.constant.WebConst;
+import com.owl.owlBlog.dto.LogActions;
 import com.owl.owlBlog.pojo.Option;
 import com.owl.owlBlog.service.ILogService;
 import com.owl.owlBlog.service.IOptionService;
 import com.owl.owlBlog.service.SiteService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +22,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("admin/setting")
-public class SettingController {
+public class SettingController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingController.class);
 
     @Resource
@@ -46,7 +50,33 @@ public class SettingController {
         request.setAttribute("options", options);
         return "admin/setting";
     }
+    //
+    @PostMapping(value = "")
+    @ResponseBody
+    public RestResponseBo saveSetting(@RequestParam(required = false)String site_theme, HttpServletRequest request) {
+        try {
 
+
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        HashMap<String, String> hashMap = new HashMap<>();
+        parameterMap.forEach((key,value)->{
+            hashMap.put(key,join(value));
+        });
+            optionService.saveOption(hashMap);
+            WebConst.initConfig = hashMap;
+            if (StringUtils.isNotBlank(site_theme)){
+             BaseController.THEME="themes/"+site_theme;
+            }
+            logService.insertLog(LogActions.SYS_SETTING.getAction(),"",request.getRemoteAddr(),this.getUid(request));
+//        logService.insertLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
+
+        return RestResponseBo.ok();
+
+        }catch (Exception e){
+            String msg="保存设置失败";
+        return  RestResponseBo.fail(msg);
+        }
+        }
     /**
      * 数组转字符串
      *
@@ -65,4 +95,6 @@ public class SettingController {
 
         return ret.length() > 0 ? ret.substring(1) : ret.toString();
     }
+
+
 }

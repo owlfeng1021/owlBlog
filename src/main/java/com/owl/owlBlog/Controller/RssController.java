@@ -14,16 +14,13 @@ import com.rometools.rome.feed.synd.SyndPerson;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
-import org.commonmark.node.ListItem;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -37,11 +34,12 @@ public class RssController {
     private String port;
     @Resource
     IContentService contentService;
+
     @GetMapping(path = "/rss")
     public Channel rss(HttpServletRequest request) throws Exception {
         List<com.owl.owlBlog.pojo.Content> rssArticles = contentService.getRssArticles();
 //        String realPath = request.getServletPath();
-        String rssPath = "http://" +ip+":"+port ;
+        String rssPath = "http://" + ip + ":" + port;
 
         Channel channel = new Channel();
         channel.setFeedType("rss_2.0");
@@ -60,18 +58,18 @@ public class RssController {
 
         Date postDate = new Date();
         channel.setPubDate(postDate);
-        List<Item> itemList =new ArrayList<>();
-        for (com.owl.owlBlog.pojo.Content content:rssArticles) {
+        List<Item> itemList = new ArrayList<>();
+        for (com.owl.owlBlog.pojo.Content content : rssArticles) {
             Item item = new Item();
-            List<com.rometools.rome.feed.rss.Category> categoryList=new ArrayList<>();
+            List<com.rometools.rome.feed.rss.Category> categoryList = new ArrayList<>();
 
             item.setAuthor("owlfeng");
-            item.setLink(rssPath+"/article/"+content.getCid());
+            item.setLink(rssPath + "/article/" + content.getCid());
             item.setTitle(content.getTitle());
-            item.setUri(rssPath+"/article/"+content.getCid());
-            item.setComments("文章有进行"+content.getStatus());
+            item.setUri(rssPath + "/article/" + content.getCid());
+            item.setComments("文章有进行" + content.getStatus());
 
-            for (Meta meta: content.getMetaList() ) {
+            for (Meta meta : content.getMetaList()) {
                 com.rometools.rome.feed.rss.Category category = new com.rometools.rome.feed.rss.Category();
                 category.setValue(meta.getName());
                 categoryList.add(category);
@@ -82,14 +80,20 @@ public class RssController {
             descr.setValue(content.getContent());
             item.setDescription(descr);
             Commons.fmtdate(content.getCreated());
-            item.setPubDate( new Date(content.getCreated()*1000L) );
+            item.setPubDate(new Date(content.getCreated() * 1000L));
             itemList.add(item);
         }
         channel.setItems(itemList);
         //Like more Entries here about different new topics
         return channel;
     }
-    @GetMapping(path = "/atom")
+
+    /**
+     * 没有使用下面的部分 只是保留下面的接口
+     *
+     * @return
+     */
+//    @GetMapping(path = "/atom")
     public Feed atom() {
         Feed feed = new Feed();
         feed.setFeedType("atom_1.0");
@@ -133,23 +137,28 @@ public class RssController {
         return feed;
     }
 
-        public static void main(String[] args) {
-            try {
-                String url = "http://localhost:8079/rss";
+    /**
+     * 查看关于rss方面参数
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            String url = "http://localhost:8079/rss";
 
-                try (XmlReader reader = new XmlReader(new URL(url))) {
-                    SyndFeed feed = new SyndFeedInput().build(reader);
-                    System.out.println(feed.getTitle());
+            try (XmlReader reader = new XmlReader(new URL(url))) {
+                SyndFeed feed = new SyndFeedInput().build(reader);
+                System.out.println(feed.getTitle());
+                System.out.println("***********************************");
+                for (SyndEntry entry : feed.getEntries()) {
+                    System.out.println(entry);
                     System.out.println("***********************************");
-                    for (SyndEntry entry : feed.getEntries()) {
-                        System.out.println(entry);
-                        System.out.println("***********************************");
-                    }
-                    System.out.println("Done");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Done");
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+    }
 }

@@ -51,7 +51,8 @@ public class ArticleController extends BaseController {
                         @RequestParam(value = "limit", defaultValue = "15") int limit,
                         HttpServletRequest request){
         // 需要created desc排序的 content
-        Page4Navigator<Content> contentsPaginator = contentService.getArticlesWithpage(Types.ARTICLE.getType(),page,limit);
+        Page4Navigator<Content> contentsPaginator = contentService.
+                getArticlesWithpage(Types.ARTICLE.getType(),page,limit);
         request.setAttribute("articles", contentsPaginator);
         return "admin/article_list";
     }

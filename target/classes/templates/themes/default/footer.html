@@ -40,11 +40,12 @@
                             <img style="display: block;margin: 0 auto;" th:src="@{/user/img/logo.png}"
                                  th:alt="${commons.site_title()}"/>
                         </a>
+                        <div >
                         <br/>
+                            <p> <a href="#header"> 在线人数<span class="counter" th:text="${application.online_number}">0</span>人</a> <a href="/rss">订阅网站rss</a></p>
                         <p>&copy; 版权所有 <a href="https://github.com/owlfeng1021/owlBlog" target="_blank"
                                           rel="nofollow">owlBlog</a>
                         </p>
-                        <br/>
                         <th:block th:if="${option}!=null and ${option.getValue()}!=''">
                             <p th:text="${option.getValue()}"></p>
                         </th:block>

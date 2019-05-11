@@ -86,7 +86,7 @@ public class IContentService {
         contents.setModified(time);
         contents.setHits(0);
         contents.setCommentsNum(0);
-        if (contents.getCid() != null && contents.getCid() != "")
+        if (StringUtils.isBlank(contents.getCid()))
         {
             contents.setCid(idWorker.nextId() + "");
         }
