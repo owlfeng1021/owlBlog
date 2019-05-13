@@ -13,6 +13,8 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,8 @@ import java.io.IOException;
 @Transactional(rollbackFor = TipException.class)
 public class AuthController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
-
+    @Resource
+    private RedisTemplate redisTemplate;
     @Resource
     private IUserService usersService;
 
@@ -56,12 +59,19 @@ public class AuthController extends BaseController {
                                   HttpServletResponse response) {
         // 把错误次数加入缓存 可以使用其他缓存
         Integer error_count = cache.get("login_error_count");
+        HttpSession session = request.getSession();
         try {
 
                 User user = usersService.login(username, password);
                 // 把用户加入缓存
-                request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
-                if (StringUtils.isNotBlank(remeber_me)) {
+
+                session.setAttribute(WebConst.LOGIN_SESSION_KEY, user);
+                session.setAttribute("loginUserId", user.getUid());
+                redisTemplate.opsForValue().set("sessions",session.getId());
+
+                redisTemplate.opsForValue().set(WebConst.LOGIN_SESSION_KEY,user.getUid());
+
+                if (StringUtils.isNotBlank(remeber_me)) { //设置记住我
                     TaleUtils.setCookie(response, user.getUid());
                 }
                 // 记录登录操作

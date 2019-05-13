@@ -2,6 +2,7 @@ com\owl\owlBlog\Controller\admin\AuthController.class
 com\owl\owlBlog\service\IMetaService.class
 com\owl\owlBlog\dao\OptionDao.class
 com\owl\owlBlog\bo\Images.class
+com\owl\owlBlog\util\owlUtil.class
 META-INF\spring-configuration-metadata.json
 com\owl\owlBlog\Controller\MusicController.class
 com\owl\owlBlog\Controller\admin\SettingController.class
@@ -11,9 +12,11 @@ com\owl\owlBlog\util\Page4Navigator.class
 com\owl\owlBlog\util\DateKit$1.class
 com\owl\owlBlog\Controller\admin\PageController.class
 com\owl\owlBlog\service\IOptionService.class
+com\owl\owlBlog\Controller\admin\TestController.class
 com\owl\owlBlog\Controller\BaseController.class
 com\owl\owlBlog\SwaggerConfig.class
 com\owl\owlBlog\Controller\IndexController.class
+com\owl\owlBlog\config\RedisSessionConfig.class
 com\owl\owlBlog\service\AttachService.class
 com\owl\owlBlog\exception\TipException.class
 com\owl\owlBlog\util\TaleUtils.class

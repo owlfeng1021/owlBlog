@@ -26,7 +26,7 @@ import java.util.List;
  * Created by Administrator on 2017/3/13 013.
  */
 @Service
-@CacheConfig(cacheNames = "contents")
+//@CacheConfig(cacheNames = "contents")
 public class IContentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(IContentService.class);
     //    /**
@@ -109,7 +109,7 @@ public class IContentService {
      * @param limit 每页条数
      * @return Content
      */
-    @Cacheable(key = "#p0+'-'+#p1")
+//    @Cacheable(key = "#p0+'-'+#p1")
     public Page4Navigator<Content> getContents(Integer p, Integer limit) {
         LOGGER.debug("Enter getContents method");
         Sort sort = new Sort(Sort.Direction.DESC, "created");
@@ -126,7 +126,7 @@ public class IContentService {
      * @param id id
      * @return ContentVo
      */
-    @Cacheable(key = "#p0")
+//    @Cacheable(key = "#p0")
     public Content getContents(String id) {
         if (StringUtils.isNotBlank(id)) {
             if (Tools.isNumber(id)) {
@@ -149,7 +149,7 @@ public class IContentService {
      *
      * @param contentVo contentVo
      */
-    @CacheEvict(value = "contents", allEntries = true)
+//    @CacheEvict(value = "contents", allEntries = true)
     public void updateContentByCid(Content content) {
         contentDao.save(content);
     }
@@ -187,7 +187,7 @@ public class IContentService {
      * @param limit
      * @return
      */
-    @Cacheable(key = "#p0+#p1+#p3")
+//    @Cacheable(key = "#p0+#p1+#p3")
     public Page4Navigator<Content> getArticlesWithpage(String type, int page, int limit) {
         Sort sort = new Sort(Sort.Direction.DESC, "created");
         Pageable pageable = PageRequest.of(page - 1, limit, sort);
@@ -202,7 +202,7 @@ public class IContentService {
      * @param cid
      */
 
-    @CacheEvict(value = "contents", allEntries = true)
+//    @CacheEvict(value = "contents", allEntries = true)
     public String deleteByCid(String cid) {
         contentDao.deleteById(cid);
         return WebConst.SUCCESS_RESULT;
@@ -213,7 +213,7 @@ public class IContentService {
      *
      * @param contents
      */
-    @CacheEvict(value = "contents", allEntries = true)
+//    @CacheEvict(value = "contents", allEntries = true)
     public String updateArticle(Content contents) {
         contentDao.save(contents);
         return WebConst.SUCCESS_RESULT;

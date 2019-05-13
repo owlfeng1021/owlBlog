@@ -10,6 +10,7 @@ import com.owl.owlBlog.service.IUserService;
 import com.owl.owlBlog.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Component
 public class BaseInterceptor implements HandlerInterceptor {
@@ -32,25 +34,35 @@ public class BaseInterceptor implements HandlerInterceptor {
     private Commons commons;
     @Resource
     private AdminCommons adminCommons;
-
+    @Resource
+    private RedisTemplate redisTemplate;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-
-
         String contextPath = request.getContextPath();
+        HttpSession session = request.getSession();
         // System.out.println(contextPath);
         String uri = request.getRequestURI();
         if (!uri.startsWith(contextPath + "/admin" + "/images")) {
             LOGGE.info("UserAgent: {}", request.getHeader(USER_AGENT));
             LOGGE.info("用户访问地址: {}, 来路地址: {}", uri, IPKit.getIpAddrByRequest(request));
-
             //请求拦截处理
             User user = TaleUtils.getLoginUser(request);
+//            String loginSessionId= (String) redisTemplate.opsForValue().get(WebConst.LOGIN_SESSION_KEY+user.getUid());
+            String sessionId =request.getSession().getId();
+
+
+            session.getAttribute(WebConst.LOGIN_SESSION_KEY);
+            Object loginUserId1= redisTemplate.opsForValue().get(WebConst.LOGIN_SESSION_KEY);
+
+            Object loginUserId3 =redisTemplate.opsForValue().get("sessions");
+
             if (null == user) {
                 Integer uid = TaleUtils.getCookieUid(request);
+
                 if (null != uid) {
                     //这里还是有安全隐患,cookie是可以伪造的
                     user = userService.findByID(String.valueOf(uid));
+
                     request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
                 }
             }

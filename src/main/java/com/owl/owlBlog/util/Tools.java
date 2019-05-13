@@ -83,7 +83,6 @@ public class Tools {
         if (null != str && 0 != str.trim().length() && str.matches("\\d*")) {
             return true;
         }
-
         return false;
     }
 }
