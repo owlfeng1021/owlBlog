@@ -7,7 +7,9 @@ import com.owl.owlBlog.dto.LogActions;
 import com.owl.owlBlog.pojo.Option;
 import com.owl.owlBlog.service.ILogService;
 import com.owl.owlBlog.service.IOptionService;
+import com.owl.owlBlog.service.IUserService;
 import com.owl.owlBlog.service.SiteService;
+import com.owl.owlBlog.util.DateKit;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,8 @@ public class SettingController extends BaseController {
 
     @Resource
     private SiteService siteService;
+    @Resource
+    IUserService userService;
 
     /**
      * 系统设置
@@ -41,7 +45,7 @@ public class SettingController extends BaseController {
     public String setting(HttpServletRequest request) {
         List<Option> voList = optionService.getOptionList();
         Map<String, String> options = new HashMap<>();
-        for (Option option:voList) {
+        for (Option option : voList) {
             options.put(option.getName(), option.getValue());
         }
         if (options.get("site_record") == null) {
@@ -50,33 +54,66 @@ public class SettingController extends BaseController {
         request.setAttribute("options", options);
         return "admin/setting";
     }
+
+    @PostMapping(value = "password")
+    @ResponseBody
+    public RestResponseBo changePassword(HttpServletRequest request) {
+        try {
+            // 使用表单请求原来还有这种操作
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            HashMap<String, String> hashMap = new HashMap<>();
+            String[] equalsValue;
+            parameterMap.forEach((key, value) -> {
+                hashMap.put(key, join(value));
+            });
+            String firstPassword = hashMap.get("firstPassword");
+            String secondPassword = hashMap.get("secondPassword");
+            if (firstPassword.equals(secondPassword)) {
+                String uid = this.getUid(request);
+                userService.changePassword(uid,firstPassword);
+                logService.insertLog(LogActions.UP_PWD.getAction(), "", request.getRemoteAddr(), this.getUid(request));
+                HashMap<String, String> changeTime = new HashMap<>();
+                changeTime.put("last_password",String.valueOf(DateKit.getCurrentUnixTime())) ;
+                optionService.saveOption(changeTime);
+                 return RestResponseBo.ok();
+            }
+            String msg = "密码不正确";
+            return RestResponseBo.fail(msg);
+        } catch (Exception e) {
+            String msg = "出现未知错误 请联系管理员";
+            return RestResponseBo.fail(msg);
+        }
+
+    }
+
     //
     @PostMapping(value = "")
     @ResponseBody
-    public RestResponseBo saveSetting(@RequestParam(required = false)String site_theme, HttpServletRequest request) {
+    public RestResponseBo saveSetting(@RequestParam(required = false) String site_theme, HttpServletRequest request) {
         try {
 
 
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        HashMap<String, String> hashMap = new HashMap<>();
-        parameterMap.forEach((key,value)->{
-            hashMap.put(key,join(value));
-        });
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            HashMap<String, String> hashMap = new HashMap<>();
+            parameterMap.forEach((key, value) -> {
+                hashMap.put(key, join(value));
+            });
             optionService.saveOption(hashMap);
             WebConst.initConfig = hashMap;
-            if (StringUtils.isNotBlank(site_theme)){
-             BaseController.THEME="themes/"+site_theme;
+            if (StringUtils.isNotBlank(site_theme)) {
+                BaseController.THEME = "themes/" + site_theme;
             }
-            logService.insertLog(LogActions.SYS_SETTING.getAction(),"",request.getRemoteAddr(),this.getUid(request));
+            logService.insertLog(LogActions.SYS_SETTING.getAction(), "", request.getRemoteAddr(), this.getUid(request));
 //        logService.insertLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
 
-        return RestResponseBo.ok();
+            return RestResponseBo.ok();
 
-        }catch (Exception e){
-            String msg="保存设置失败";
-        return  RestResponseBo.fail(msg);
+        } catch (Exception e) {
+            String msg = "保存设置失败";
+            return RestResponseBo.fail(msg);
         }
-        }
+    }
+
     /**
      * 数组转字符串
      *

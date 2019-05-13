@@ -19,6 +19,7 @@ public class IUserService {
     UserDao userDao;
     @Resource
     DefaultData defaultUser;
+
     public User findByID(String id) {
         return userDao.findByUid(id);
     }
@@ -55,9 +56,16 @@ public class IUserService {
         return user.getUid();
     }
 
+    public String changePassword(String uid, String password) {
+        User user = findByID(uid);
+        String encodePwd = TaleUtils.MD5encode(user.getUsername() + password);
+        user.setPassword(encodePwd);
+        return uid;
+    }
+
     public boolean checkEmpty() {
         List<User> all = userDao.findAll();
-        if (all.size()==0) {
+        if (all.size() == 0) {
             insertUser(defaultUser.getUser());
             return false;
         }

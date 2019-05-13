@@ -23,7 +23,6 @@ public class IOptionService {
         data.forEach((key,value)->{
             optionDao.saveOption(key,value);
         });
-
-
     }
+
 }

@@ -131,7 +131,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-color panel-danger">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">修改当前用户密码</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form id="passwordFrom" class="form-inline" role="form">
+                                    <div class="form-group col-md-6">
+                                        <input id="inputFrom" name="firstPassword" style="width: 100%;" class="form-control" placeholder="请输入要修改的密码" required="" aria-required="true" type="password"/>
+                                    </div>
 
+                                    <button type="button" class="btn btn-danger waves-effect waves-light m-l-10" onclick="changePassword();">修改密码</button>
+
+                                    <div class="form-group col-md-6">
+                                        <input id="secondInputFrom" name="secondPassword" style="width: 100%;" class="form-control" placeholder="请输入重复输入密码" required="" aria-required="true" type="password"/>
+                                    </div>
+                                    <div>
+                                        <b>上一次修改时间:</b></br><span th:text="${commons.fmtdate(options.last_password,'yyyy年MM月dd日HH:mm:ss')}"></span>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div th:replace="admin/footer :: footer-content"></div>
             </div>
@@ -139,6 +162,8 @@
     </div>
 </div>
 <div th:replace="admin/footer :: footer"></div>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <script src="//cdn.bootcss.com/jquery-toggles/2.0.4/toggles.min.js"></script>
 <script type="text/javascript">
     /*<![CDATA[*/
@@ -161,7 +186,25 @@
             }
         });
     }
+    /**
+     *  修改密码
+     */
+     function changePassword() {
+        var token = $('#passwordFrom').serialize();
+        axios.post("/admin/setting/password",token).then(result=>{
+            if(result && result.data.success){
+                tale.alertOkAndReload('修改密码成功');
 
+
+            } else {
+                tale.alertError(result.msg || '修改密码失败');
+                $("#inputFrom").val('')
+                $("#secondInputFrom").val('');
+
+
+            }
+        })
+    }
     /**
      * 保存个性化设置
      */
