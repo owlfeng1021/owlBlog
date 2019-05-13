@@ -1,10 +1,8 @@
 package com.owl.owlBlog.Controller;
 
-import com.owl.owlBlog.bo.ArchiveBo;
-import com.owl.owlBlog.bo.IndexBo;
+import com.owl.owlBlog.bo.*;
 import com.owl.owlBlog.dto.ErrorCode;
 
-import com.owl.owlBlog.bo.RestResponseBo;
 import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.dto.Types;
 import com.owl.owlBlog.pojo.Comment;
@@ -37,12 +35,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.print.Pageable;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 
 
 @Controller
-public class IndexController extends BaseController{
+public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
     @Resource
     IContentService contentService;
@@ -67,6 +66,7 @@ public class IndexController extends BaseController{
     public String index(HttpServletRequest request, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         return this.index(request, 1, limit);
     }
+
     /**
      * 首页分页
      *
@@ -89,6 +89,7 @@ public class IndexController extends BaseController{
         }
         return this.render("index");
     }
+
     /**
      * 文章页(预览)
      *
@@ -113,6 +114,7 @@ public class IndexController extends BaseController{
         return this.render("post");
 
     }
+
     /**
      * 抽取公共方法
      *
@@ -130,6 +132,7 @@ public class IndexController extends BaseController{
             request.setAttribute("comments", commentsPaginator);
         }
     }
+
     /**
      * 更新文章的点击率
      *
@@ -152,6 +155,7 @@ public class IndexController extends BaseController{
             cache.hset("article" + cid, "hits", hits);
         }
     }
+
     /**
      * 检查同一个ip地址是否在2小时内访问同一文章
      *
@@ -251,6 +255,21 @@ public class IndexController extends BaseController{
             return RestResponseBo.fail(msg);
         }
     }
+
+    @GetMapping(value = "title")
+    @ResponseBody
+    public List<LinkBo> titleUrl() {
+        List<LinkBo> titleList=new ArrayList<>();
+        List<Content> page = contentService.getPage();
+        for (Content content : page) {
+            LinkBo linkBo = new LinkBo();
+            linkBo.setName(content.getTitle());
+            linkBo.setLink(content.getSlug());
+            titleList.add(linkBo);
+        }
+        return titleList;
+    }
+
     /**
      * 设置cookie
      *
@@ -265,6 +284,7 @@ public class IndexController extends BaseController{
         cookie.setSecure(false);
         response.addCookie(cookie);
     }
+
     /**
      * 注销
      *
@@ -275,6 +295,7 @@ public class IndexController extends BaseController{
     public void logout(HttpSession session, HttpServletResponse response) {
         TaleUtils.logout(session, response);
     }
+
     /**
      * 归档页
      *
@@ -284,7 +305,7 @@ public class IndexController extends BaseController{
     public String archives(HttpServletRequest request) {
         List<ArchiveBo> archives = siteService.getArchives();
         request.setAttribute("archives", archives);
-         return this.render("archives");
+        return this.render("archives");
     }
 
     /**
@@ -298,10 +319,11 @@ public class IndexController extends BaseController{
         request.setAttribute("links", links);
         return this.render("links");
     }
+
     /**
      * 自定义页面,如关于的页面
      */
-   @GetMapping(value = "/{pagename}")
+    @GetMapping(value = "/{pagename}")
     public String page(@PathVariable String pagename, HttpServletRequest request) {
         Content contents = contentService.getContents(pagename);
         if (null == contents) {
@@ -321,7 +343,6 @@ public class IndexController extends BaseController{
 //        }
         return this.render("page");
     }
-
 
 
     /**
@@ -346,7 +367,7 @@ public class IndexController extends BaseController{
     }
 
     @GetMapping(value = "getOption")
-    public List<IndexBo> indexPhoto(){
+    public List<IndexBo> indexPhoto() {
         IndexBo indexBo = new IndexBo();
 
 

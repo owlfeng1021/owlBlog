@@ -56,6 +56,7 @@ com\owl\owlBlog\bo\RestResponseBo.class
 com\owl\owlBlog\util\MapCache$CacheObject.class
 com\owl\owlBlog\testMain.class
 com\owl\owlBlog\pojo\Log.class
+com\owl\owlBlog\bo\LinkBo.class
 com\owl\owlBlog\service\ILogService.class
 com\owl\owlBlog\pojo\Content.class
 com\owl\owlBlog\service\SiteService.class

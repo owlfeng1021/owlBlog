@@ -22,6 +22,7 @@ D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\dto\ErrorCode.ja
 D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\Controller\admin\LinkController.java
 D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\util\TaleUtils.java
 D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\pojo\Comment.java
+D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\bo\LinkBo.java
 D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\pojo\Option.java
 D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\config\DefaultData.java
 D:\myRepository\0_my-blog\owlBlog\src\main\java\com\owl\owlBlog\util\IdWorker.java

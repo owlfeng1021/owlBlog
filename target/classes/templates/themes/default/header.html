@@ -14,6 +14,7 @@
     <title><th:block th:text="${title ?: '首页'}+' - '+${commons.site_option('site_title','My Blog')}"></th:block></title>
     <link th:href="@{//cdn.bootcss.com/highlight.js/9.9.0/styles/xcode.min.css}" rel="stylesheet"/>
     <link th:href="@{/user/css/style.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <script th:src="@{//cdn.bootcss.com/jquery/2.2.3/jquery.min.js}"></script>
 
     <!--[if lt IE 9]>
@@ -29,16 +30,15 @@
 <![endif]-->
 <header id="header" class="header bg-white">
 
-    <div class="navbar-container">
+    <div id="container" class="navbar-container">
         <a th:href="${commons.site_url('/')}" class="navbar-logo">
             <img th:src="@{/user/img/logo.png}" alt="首页"/>
         </a>
         <div class="navbar-menu">
             <!--这里加一个关于typepage的查询 然后返回这些link-->
-            <a th:href="${commons.site_url('/archives')}">归档</a>
-            <a th:href="${commons.site_url('/links')}">友链</a>
-            <a th:href="${commons.site_url('/about')}">关于</a>
-
+                <a :href ="'/'+site.link"  v-for="site in sites" >
+                    {{site.name}}
+                </a>
         </div>
         <div class="navbar-search" onclick="">
             <span class="icon-search"></span>
@@ -52,12 +52,55 @@
         <div class="navbar-mobile-menu" onclick="">
             <span class="icon-menu cross"><span class="middle"></span></span>
             <ul>
-                <li><a th:href="${commons.site_url('/archives')}">归档</a></li>
-                <li><a th:href="${commons.site_url('/links')}">友链</a></li>
-                <li><a th:href="${commons.site_url('/about')}">关于</a></li>
+                <li   v-for="site in sites" >
+                    <a :href ="'/'+site.link" >
+                        {{site.name}}
+                    </a>
+                </li>
             </ul>
         </div>
+
     </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script th:inline="javascript">
+
+        var vm2 = new Vue({
+            el:"#container",
+            data:{
+                url:"title",
+                sites: [
+
+                ]
+            },
+            created:function(){
+
+            },
+            mounted(){
+                var initSites=[
+                { name: '归档' ,link:'archives'},
+                { name: '友链' ,link:'links'},
+                ]
+                this.init(initSites)
+            },
+            methods:{
+                init(param){
+                    axios.get('/'+this.url).then(response=>{
+                        console.log(response.data)
+                        for (i in response.data) {
+                            param.push(response.data[i]);
+                        }
+
+                        this.sites=param;
+                    }).catch(error=>{
+                        console.log(error);
+                        alert('获取导航栏信息失败！');
+                    })
+                }
+            }
+        })
+
+    </script>
 </header>
 
 </body>

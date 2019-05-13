@@ -34,14 +34,14 @@
                         initAplayer(playerOption,id){
                             var url = '/'+this.uri+"?listId="+id;
                             // 因为网易云接口出现异常所以暂时关闭这个接口
-                            // axios.get(url).then(response => {
-                            //     console.log(response.data)
-                            //     playerOption.audio=response.data;
-                            //     var ap = new APlayer(playerOption);
-                            // }).catch(function (error) {
-                            //     console.log(error);
-                            //     alert('获取歌单信息失败！');
-                            // });
+                            axios.get(url).then(response => {
+                                console.log(response.data)
+                                playerOption.audio=response.data;
+                                var ap = new APlayer(playerOption);
+                            }).catch(function (error) {
+                                console.log(error);
+                                alert('获取歌单信息失败！');
+                            });
                         }
                     }
                 });

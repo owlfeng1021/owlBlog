@@ -56,6 +56,7 @@ public class BaseInterceptor implements HandlerInterceptor {
             }
 
             if (uri.startsWith(contextPath + "/admin") && !uri.startsWith(contextPath + "/admin/login") && null == user) {
+//                换成转发就可以了
                 response.sendRedirect(request.getContextPath() + "/admin/login");
                 return false;
             }

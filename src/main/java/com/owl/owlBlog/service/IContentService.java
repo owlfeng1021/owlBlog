@@ -231,4 +231,10 @@ public class IContentService {
     }
 
 
+    public List<Content> getPage() {
+        Sort sort = new Sort(Sort.Direction.DESC, "created");
+        Pageable pageable = PageRequest.of( 0, 10, sort);
+        Page<Content> byType = contentDao.findByType(Types.PAGE.getType(), pageable);
+        return byType.getContent() ;
+    }
 }
