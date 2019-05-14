@@ -1,7 +1,7 @@
-package com.owl.owlBlog.Controller.admin;
+package com.owl.owlBlog.controller.admin;
 
-import com.owl.owlBlog.Controller.BaseController;
-import com.owl.owlBlog.Controller.IndexController;
+import com.owl.owlBlog.controller.BaseController;
+import com.owl.owlBlog.controller.IndexController;
 import com.owl.owlBlog.bo.StatisticsBo;
 import com.owl.owlBlog.pojo.Comment;
 import com.owl.owlBlog.pojo.Content;

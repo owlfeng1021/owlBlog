@@ -1,6 +1,5 @@
 package com.owl.owlBlog;
 
-import com.owl.owlBlog.Controller.IndexController;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +9,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
@@ -29,8 +26,8 @@ public class SwaggerConfig {
                 "http://www.owlfeng.cn/");
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.owl.owlBlog.Controller"))
-//                .apis(RequestHandlerSelectors.basePackage("com.owl.owlBlog.Controller.admin"))
+                .apis(RequestHandlerSelectors.basePackage("com.owl.owlBlog.controller"))
+//                .apis(RequestHandlerSelectors.basePackage("com.owl.owlBlog.controller.admin"))
 //                .paths(regex("/admin/.*"))
 //               开放所有路径
                 .paths(PathSelectors.any())

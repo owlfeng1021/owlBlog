@@ -1,7 +1,7 @@
 package com.owl.owlBlog.util;
 
 
-import com.owl.owlBlog.Controller.admin.AttachController;
+import com.owl.owlBlog.controller.admin.AttachController;
 import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.exception.TipException;
 import com.owl.owlBlog.pojo.User;

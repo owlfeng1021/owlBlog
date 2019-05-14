@@ -1,6 +1,6 @@
-package com.owl.owlBlog.Controller.admin;
+package com.owl.owlBlog.controller.admin;
 
-import com.owl.owlBlog.Controller.BaseController;
+import com.owl.owlBlog.controller.BaseController;
 import com.owl.owlBlog.bo.RestResponseBo;
 import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.dto.Types;

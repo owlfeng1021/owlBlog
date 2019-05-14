@@ -1,4 +1,4 @@
-package com.owl.owlBlog.Controller;
+package com.owl.owlBlog.controller;
 
 
 import com.alibaba.fastjson.JSON;

@@ -9,5 +9,9 @@ public interface MetaDao extends JpaRepository<Meta,String> {
       long countByType(String type);
       List<Meta> findByType(String type);
       List<Meta> findByTypeAndName(String type,String name);
+      List<Meta> findByTypeAndSlug(String type,String slug);
+      List<Meta> findBySlug(String slug);
+      int countByMid(String mid);
+      int countBySlug(String slug);
 
 }

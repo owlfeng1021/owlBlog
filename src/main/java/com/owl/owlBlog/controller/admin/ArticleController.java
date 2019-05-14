@@ -1,10 +1,8 @@
-package com.owl.owlBlog.Controller.admin;
+package com.owl.owlBlog.controller.admin;
 
-import com.owl.owlBlog.Controller.BaseController;
+import com.owl.owlBlog.controller.BaseController;
 import com.owl.owlBlog.bo.RestResponseBo;
-import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.dto.LogActions;
-import com.owl.owlBlog.dto.MetaDto;
 import com.owl.owlBlog.dto.Types;
 import com.owl.owlBlog.exception.TipException;
 import com.owl.owlBlog.pojo.Content;
@@ -23,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+
 import static com.owl.owlBlog.util.Commons.returnStatus;
 
 import javax.annotation.Resource;

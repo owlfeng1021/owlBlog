@@ -1,7 +1,6 @@
-package com.owl.owlBlog.Controller.admin;
+package com.owl.owlBlog.controller.admin;
 
 import com.owl.owlBlog.bo.RestResponseBo;
-import com.owl.owlBlog.dto.MetaDto;
 import com.owl.owlBlog.dto.Types;
 import com.owl.owlBlog.pojo.Meta;
 import com.owl.owlBlog.service.IMetaService;

@@ -1,6 +1,6 @@
-package com.owl.owlBlog.Controller.admin;
+package com.owl.owlBlog.controller.admin;
 
-import com.owl.owlBlog.Controller.BaseController;
+import com.owl.owlBlog.controller.BaseController;
 import com.owl.owlBlog.bo.RestResponseBo;
 import com.owl.owlBlog.pojo.Comment;
 import com.owl.owlBlog.pojo.User;
@@ -20,6 +20,14 @@ public class CommentController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
     @Resource
     private ICommentService commentsService;
+
+    /**
+     *  进入评论管理界面
+     * @param page
+     * @param limit
+     * @param request
+     * @return
+     */
     @GetMapping(value = "")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page,
                         @RequestParam(value = "limit", defaultValue = "15") int limit, HttpServletRequest request) {
@@ -30,6 +38,12 @@ public class CommentController extends BaseController {
         return "admin/comment_list";
     }
 
+    /**
+     *  改变评论状态
+     * @param coid
+     * @param status
+     * @return
+     */
     @PostMapping(value = "status")
     @ResponseBody
     public RestResponseBo delete(@RequestParam String coid, @RequestParam String status) {

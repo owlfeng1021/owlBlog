@@ -1,4 +1,4 @@
-package com.owl.owlBlog.Controller;
+package com.owl.owlBlog.controller;
 
 import com.owl.owlBlog.bo.*;
 import com.owl.owlBlog.dto.ErrorCode;
@@ -12,13 +12,8 @@ import com.owl.owlBlog.service.ICommentService;
 import com.owl.owlBlog.service.IContentService;
 import com.owl.owlBlog.service.IMetaService;
 import com.owl.owlBlog.service.SiteService;
-import com.owl.owlBlog.util.IPKit;
-import com.owl.owlBlog.util.Page4Navigator;
-import com.owl.owlBlog.util.PatternKit;
-import com.owl.owlBlog.util.TaleUtils;
-import com.sun.jarsigner.ContentSigner;
+import com.owl.owlBlog.util.*;
 import com.vdurmont.emoji.EmojiParser;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -33,11 +28,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.print.Pageable;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -114,7 +107,25 @@ public class IndexController extends BaseController {
         return this.render("post");
 
     }
+    @GetMapping(value = {"category/{mid}", "category/{mid}.html"})
+    public String getCategory(HttpServletRequest request, @PathVariable String mid){
+        List<Meta> metasByType = metaService.getMetasByType(mid);
+        return this.render("tags");
+    }
+//        List<ArchiveBo> archives = siteService.getArchives();
+//        request.setAttribute("archives", archives);
+//        return this.render("archives");
+//        List<Meta> links = metaService.getMetasByType(Types.LINK.getType());
+//        request.setAttribute("links", links);
+//        return this.render("links");
+    @GetMapping(value = {"tag/{mid}", "tag/{mid}.html"})
+    public String getTag(HttpServletRequest request, @PathVariable String mid){
+        List<Meta> metaList = metaService.getMetasByTypeAndMid(Types.TAG.getType(), mid);
+        for (Meta meta:metaList ) {
 
+        }
+        return this.render("tags");
+    }
     /**
      * 抽取公共方法
      *
@@ -235,7 +246,9 @@ public class IndexController extends BaseController {
         comments.setUrl(url);
         comments.setContent(text);
         comments.setMail(mail);
-        comments.setParent(coid);
+        // 关于评论的父评论这个功能暂且没有去写这个东西
+        comments.setParent(0);
+
         try {
             String result = commentService.insertComment(comments);
             cookie("tale_remember_author", URLEncoder.encode(author, "UTF-8"), 7 * 24 * 60 * 60, response);
@@ -244,7 +257,7 @@ public class IndexController extends BaseController {
                 cookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
             }
             // 设置对每个文章1分钟可以评论一次
-            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 60);
+            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 30);
             if (!WebConst.SUCCESS_RESULT.equals(result)) {
                 return RestResponseBo.fail(result);
             }
