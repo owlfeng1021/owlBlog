@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "t_options")
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 /**
  *  这个表是添加 外来链接和相关配置的
  */
-public class Option {
+public class Option  implements Serializable {
     /**
      * 配置名称
      */

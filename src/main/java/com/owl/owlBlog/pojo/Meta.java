@@ -3,12 +3,13 @@ package com.owl.owlBlog.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "t_meats")
-public class Meta {
+public class Meta implements Serializable {
     /**
      * 项目主键
      */

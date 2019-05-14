@@ -2,6 +2,7 @@ package com.owl.owlBlog.util;
 
 import org.springframework.data.domain.Page;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public class Page4Navigator<T> {
+public class Page4Navigator<T> implements Serializable {
     Page<T> pageFromJPA; //这里是 jpa自带的 page
 
     int navigatePages;
