@@ -12,6 +12,27 @@
                         <h4 class="page-title">文章管理</h4>
                     </div>
                     <div class="col-md-12">
+                        <div class="form-group col-md-4" style="padding: 0 10px 0 0;">
+                            <input type="text" class="form-control" placeholder="请输入文章标题（必须）" name="title"
+                                   required="required"
+                                   aria-required="true"
+                                   th:value="${contents!=null and contents.title!=null }?${contents.title}: ''"/>
+                        </div>
+
+                        <div class="form-group col-md-4" style="padding: 0 10px 0 0;">
+                            <input name="tags" id="tags" type="text" class="form-control" placeholder="请填写文章标签"
+                                   th:value="${contents!=null and contents.tags !=null}?${contents.tags}: ''"/>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <select >
+                                    <option value="#">请选择分类...</option>
+                                <th:block th:each="c : ${articles.list}">
+                                    <option th:value="${c.categories}" th:text="${c.categories}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
@@ -65,97 +86,14 @@
                         <div th:replace="comm/macros :: pageAdminNav(${articles})"></div>
                     </div>
                 </div>
-                <div id="elementTable">
-                <el-table  :data="tableData"
-                          border
-                          style="width: 100%">
-                    <el-table-column
-                            fixed
-                            prop="date"
-                            label="日期"
-                            width="150">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="姓名"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="province"
-                            label="省份"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="city"
-                            label="市区"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="address"
-                            label="地址"
-                            width="300">
-                    </el-table-column>
-                    <el-table-column
-                            prop="zip"
-                            label="邮编"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            fixed="right"
-                            label="操作"
-                            width="100">
-                        <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                            <el-button type="text" size="small">编辑</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-</div>
-
                 <div th:replace="admin/footer :: footer-content"></div>
             </div>
         </div>
     </div>
 </div>
 <div th:replace="admin/footer :: footer"></div>
-<script src="https://cdn.bootcss.com/element-ui/2.8.2/index.js"></script>
-<script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
-<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <script type="text/javascript">
     /*<![CDATA[*/
-    var vm2 = new Vue({
-        el: "#elementTable",
-        data: { tableData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1517 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1519 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1516 弄',
-                zip: 200333
-            }]
-        },
-    })
     var tale = new $.tale();
 
 

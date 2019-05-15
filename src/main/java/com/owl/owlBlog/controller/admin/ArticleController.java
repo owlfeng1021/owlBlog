@@ -55,7 +55,8 @@ public class ArticleController extends BaseController {
         Page4Navigator<Content> contentsPaginator = contentService.
                 getArticlesWithpage(Types.ARTICLE.getType(),page,limit);
         request.setAttribute("articles", contentsPaginator);
-        return "admin/old_article_list";
+//        return "admin/old_article_list";
+        return "admin/article_list";
     }
     @GetMapping("/publish")
     public String newArticle(HttpServletRequest request ){
@@ -88,7 +89,7 @@ public class ArticleController extends BaseController {
         String result = contentService.publish(contents);
         return returnStatus(result);
     }
-    @RequestMapping(value = "/delete")
+    @DeleteMapping(value = "/delete")
     @ResponseBody
     public RestResponseBo delete(@RequestParam String cid, HttpServletRequest request) {
         commentService.delete(null,cid);

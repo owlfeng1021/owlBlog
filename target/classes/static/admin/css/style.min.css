@@ -3077,7 +3077,8 @@ input.search-bar:-ms-input-placeholder {
     bottom: 0;
     top: 0;
     width: 240px;
-    z-index: 2
+    z-index: 2;
+    display: block;
 }
 
 .side-menu.left {
