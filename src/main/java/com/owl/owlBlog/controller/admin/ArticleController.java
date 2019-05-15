@@ -8,6 +8,7 @@ import com.owl.owlBlog.exception.TipException;
 import com.owl.owlBlog.pojo.Content;
 import com.owl.owlBlog.pojo.Meta;
 import com.owl.owlBlog.pojo.User;
+import com.owl.owlBlog.service.ICommentService;
 import com.owl.owlBlog.service.IContentService;
 import com.owl.owlBlog.service.ILogService;
 import com.owl.owlBlog.service.IMetaService;
@@ -41,6 +42,8 @@ public class ArticleController extends BaseController {
     @Resource
     private IContentService contentService;
     @Resource
+    private ICommentService commentService;
+    @Resource
     private IdWorker idWorker;
 
     @ApiOperation(value = "获取所有文章", notes = "查询分页数据")
@@ -52,7 +55,7 @@ public class ArticleController extends BaseController {
         Page4Navigator<Content> contentsPaginator = contentService.
                 getArticlesWithpage(Types.ARTICLE.getType(),page,limit);
         request.setAttribute("articles", contentsPaginator);
-        return "admin/article_list";
+        return "admin/old_article_list";
     }
     @GetMapping("/publish")
     public String newArticle(HttpServletRequest request ){
@@ -88,6 +91,7 @@ public class ArticleController extends BaseController {
     @RequestMapping(value = "/delete")
     @ResponseBody
     public RestResponseBo delete(@RequestParam String cid, HttpServletRequest request) {
+        commentService.delete(null,cid);
         String result = contentService.deleteByCid(cid);
         logService.insertLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
         return returnStatus(result);

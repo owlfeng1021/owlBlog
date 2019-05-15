@@ -107,10 +107,31 @@ public class IndexController extends BaseController {
         return this.render("post");
 
     }
+
+    /**
+     * 分类页面
+     *
+     * @param request
+     * @param mid
+     * @return
+     */
     @GetMapping(value = {"category/{mid}", "category/{mid}.html"})
-    public String getCategory(HttpServletRequest request, @PathVariable String mid){
-        List<Meta> metasByType = metaService.getMetasByType(mid);
-        return this.render("tags");
+    public String getCategory(HttpServletRequest request, @PathVariable String mid) {
+        Page4Navigator<Content> page4Navigator = new Page4Navigator<>();
+        if (StringUtils.isNotBlank(mid)) {
+            if ("默认分类".equals(mid)) {
+                List<Content> defaultCategories = contentService.findByCatgories("默认分类");
+                page4Navigator.setList(defaultCategories);
+            } else {
+                List<Content> defaultCategories = contentService.findByCatgories(mid);
+                page4Navigator.setList(defaultCategories);
+
+            }
+        }
+        request.setAttribute("keyword", mid);
+        request.setAttribute("type", "分类");
+        request.setAttribute("articles", page4Navigator);
+        return this.render("page-category");
     }
 //        List<ArchiveBo> archives = siteService.getArchives();
 //        request.setAttribute("archives", archives);
@@ -118,14 +139,30 @@ public class IndexController extends BaseController {
 //        List<Meta> links = metaService.getMetasByType(Types.LINK.getType());
 //        request.setAttribute("links", links);
 //        return this.render("links");
-    @GetMapping(value = {"tag/{mid}", "tag/{mid}.html"})
-    public String getTag(HttpServletRequest request, @PathVariable String mid){
-        List<Meta> metaList = metaService.getMetasByTypeAndMid(Types.TAG.getType(), mid);
-        for (Meta meta:metaList ) {
 
-        }
-        return this.render("tags");
+    /**
+     * 标题页面
+     *
+     * @param request
+     * @param mid
+     * @return
+     */
+    @GetMapping(value = {"tag/{mid}", "tag/{mid}.html"})
+    public String getTag(HttpServletRequest request, @PathVariable String mid) {
+
+        List<Meta> metaList = metaService.getMetasByTypeAndMid(Types.TAG.getType(), mid);
+        Meta meta = metaList.get(0);
+        List<Content> contentList = meta.getContentList();
+        Page4Navigator<Content> page4Navigator = new Page4Navigator<>();
+        page4Navigator.setList(contentList);
+
+        request.setAttribute("keyword", meta.getName());
+        request.setAttribute("type", "标签");
+        request.setAttribute("articles", page4Navigator);
+
+        return this.render("page-category");
     }
+
     /**
      * 抽取公共方法
      *
@@ -272,7 +309,7 @@ public class IndexController extends BaseController {
     @GetMapping(value = "title")
     @ResponseBody
     public List<LinkBo> titleUrl() {
-        List<LinkBo> titleList=new ArrayList<>();
+        List<LinkBo> titleList = new ArrayList<>();
         List<Content> page = contentService.getPage();
         for (Content content : page) {
             LinkBo linkBo = new LinkBo();

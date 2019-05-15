@@ -195,6 +195,17 @@ public class IContentService {
         return new Page4Navigator<Content>(PageData, limit);
 
     }
+    /**
+     * 根据分类查找
+     *
+     * @param cid
+     */
+
+
+    public List<Content> findByCatgories(String cid) {
+        return contentDao.findByCategoriesOrderByCreatedDesc(cid);
+    }
+
 
     /**
      * 根据文章id删除

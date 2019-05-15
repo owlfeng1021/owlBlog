@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ContentDao extends JpaRepository<Content, String> {
+    List<Content> findByCategoriesOrderByCreatedDesc(String categories);
     Page<Content> findByType(String type, Pageable pageable);
 
     Page<Content> findByTitleLikeAndTypeAndStatus(String title, String type, String status, Pageable pageable);

@@ -1,0 +1,47 @@
+Manifest-Version: 1.0
+Class-Path: spring-aspects-5.0.5.RELEASE.jar thymeleaf-extras-java8tim
+ e-3.0.1.RELEASE.jar springfox-spi-2.9.2.jar attoparser-2.0.4.RELEASE.
+ jar unbescape-1.1.5.RELEASE.jar jackson-databind-2.9.5.jar spring-boo
+ t-starter-thymeleaf-2.0.1.RELEASE.jar spring-boot-starter-websocket-2
+ .0.1.RELEASE.jar log4j-api-2.10.0.jar javassist-3.22.0-GA.jar logback
+ -classic-1.2.3.jar spring-boot-starter-jdbc-2.0.1.RELEASE.jar dom4j-1
+ .6.1.jar jdom2-2.0.6.jar tomcat-embed-core-8.5.29.jar emoji-java-3.2.
+ 0.jar hibernate-jpa-2.1-api-1.0.0.Final.jar spring-boot-starter-json-
+ 2.0.1.RELEASE.jar logback-core-1.2.3.jar swagger-models-1.5.20.jar sp
+ ring-boot-starter-aop-2.0.1.RELEASE.jar spring-jdbc-5.0.5.RELEASE.jar
+  springfox-swagger2-2.9.2.jar spring-jcl-5.0.5.RELEASE.jar spring-cor
+ e-5.0.5.RELEASE.jar validation-api-2.0.1.Final.jar jconsole.jar sprin
+ gfox-swagger-common-2.9.2.jar snakeyaml-1.19.jar tools.jar spring-bea
+ ns-5.0.5.RELEASE.jar spring-web-5.0.5.RELEASE.jar spring-boot-starter
+ -data-jpa-2.0.1.RELEASE.jar spring-messaging-5.0.5.RELEASE.jar javax.
+ annotation-api-1.3.2.jar springfox-schema-2.9.2.jar jackson-datatype-
+ jsr310-2.9.5.jar springfox-spring-web-2.9.2.jar mapstruct-1.2.0.Final
+ .jar classmate-1.3.4.jar byte-buddy-1.7.11.jar aspectjweaver-1.8.13.j
+ ar tomcat-embed-websocket-8.5.29.jar commonmark-0.8.0.jar spring-expr
+ ession-5.0.5.RELEASE.jar rome-1.8.0.jar spring-context-5.0.5.RELEASE.
+ jar json-20140107.jar slf4j-api-1.7.25.jar jboss-logging-3.3.2.Final.
+ jar spring-data-jpa-2.0.6.RELEASE.jar rome-utils-1.8.0.jar httpclient
+ -4.5.5.jar jackson-annotations-2.9.0.jar spring-boot-devtools-2.0.1.R
+ ELEASE.jar jackson-core-2.9.5.jar spring-boot-starter-2.0.1.RELEASE.j
+ ar spring-orm-5.0.5.RELEASE.jar springfox-core-2.9.2.jar spring-conte
+ xt-support-5.0.5.RELEASE.jar spring-aop-5.0.5.RELEASE.jar commons-lan
+ g3-3.5.jar thymeleaf-3.0.9.RELEASE.jar spring-plugin-core-1.2.0.RELEA
+ SE.jar hibernate-core-5.2.16.Final.jar tomcat-embed-el-8.5.29.jar spr
+ ing-boot-configuration-processor-2.0.1.RELEASE.jar swagger-annotation
+ s-1.5.20.jar antlr-2.7.7.jar jackson-module-parameter-names-2.9.5.jar
+  HikariCP-2.7.8.jar commons-codec-1.11.jar fastjson-1.2.32.jar httpco
+ re-4.4.9.jar hibernate-commons-annotations-5.0.1.Final.jar mysql-conn
+ ector-java-5.1.46.jar spring-boot-starter-web-2.0.1.RELEASE.jar commo
+ nmark-ext-gfm-tables-0.8.0.jar spring-boot-starter-tomcat-2.0.1.RELEA
+ SE.jar spring-boot-autoconfigure-2.0.1.RELEASE.jar spring-boot-starte
+ r-cache-2.0.1.RELEASE.jar springfox-swagger-ui-2.9.2.jar thymeleaf-sp
+ ring5-3.0.9.RELEASE.jar spring-plugin-metadata-1.2.0.RELEASE.jar guav
+ a-20.0.jar spring-tx-5.0.5.RELEASE.jar qcloudsms-1.0.6.jar spring-web
+ mvc-5.0.5.RELEASE.jar spring-boot-starter-logging-2.0.1.RELEASE.jar j
+ andex-2.0.3.Final.jar spring-data-commons-2.0.6.RELEASE.jar spring-we
+ bsocket-5.0.5.RELEASE.jar log4j-to-slf4j-2.10.0.jar druid-1.0.18.jar 
+ hibernate-validator-6.0.9.Final.jar jul-to-slf4j-1.7.25.jar httpmime-
+ 4.5.5.jar jackson-datatype-jdk8-2.9.5.jar spring-boot-2.0.1.RELEASE.j
+ ar javax.transaction-api-1.2.jar
+Main-Class: com.owl.owlBlog.Application
+

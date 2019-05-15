@@ -124,7 +124,7 @@ public class ICommentService {
 
 
     /**
-     * 删除评论，暂时没用
+     * 删除评论 在删除文章之后使用
      *
      * @param coid
      * @param cid
@@ -139,6 +139,11 @@ public class ICommentService {
                 if (null != contents && contents.getCommentsNum() > 0) {
                     contentService.updateContentByCid(contents);
                 }
+            }
+        }else {
+            if (StringUtils.isNotBlank(cid))
+            {
+                commentDao.deleteByContent(cid);
             }
         }
 

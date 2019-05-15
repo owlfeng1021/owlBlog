@@ -82,7 +82,6 @@ public class IMetaService {
         }
         return byType;
     }
-
     /**
      * 根据类型查询项目列表
      *
