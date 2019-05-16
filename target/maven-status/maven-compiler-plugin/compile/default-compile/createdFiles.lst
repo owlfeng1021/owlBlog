@@ -23,6 +23,7 @@ com\owl\owlBlog\service\IUserService.class
 com\owl\owlBlog\config\DefaultData.class
 com\owl\owlBlog\controller\MusicController.class
 com\owl\owlBlog\pojo\Option.class
+com\owl\owlBlog\service\IContentService$1.class
 com\owl\owlBlog\interceptor\BaseInterceptor.class
 com\owl\owlBlog\util\PatternKit.class
 com\owl\owlBlog\bo\BackResponseBo.class

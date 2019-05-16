@@ -17,10 +17,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/3/13 013.
@@ -117,6 +127,43 @@ public class IContentService {
         Page<Content> contentList = contentDao.findByTypeAndStatus(Types.ARTICLE.getType(), Types.PUBLISH.getType(), pageable);
         LOGGER.debug("Exit getContents method");
         return new Page4Navigator<>(contentList, 11);
+    }
+    public Page4Navigator<Content> findByCondition(int page, int limit, Map<String, String> map){
+        LOGGER.debug("Enter getContents method");
+        String title = map.get("title");
+        String startTime = map.get("startTime");
+        String endTime = map.get("endTime");
+        String category = map.get("category");
+
+        Integer startFormat = DateKit.stringFormat(startTime,"0");
+        Integer endFormat = DateKit.stringFormat(endTime,"1");
+
+        Sort sort = new Sort(Sort.Direction.DESC, "created");
+        Pageable pageable = PageRequest.of(page - 1, limit, sort);
+        Specification querySpecifi = new Specification<Content>() {
+
+            @Override
+            public Predicate toPredicate(Root<Content> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                    predicates.add(criteriaBuilder.equal(root.get("type"),"post"));
+                if(StringUtils.isNotBlank(title) ){
+                    predicates.add(criteriaBuilder.like(root.get("title"), "%"+title+"%"));
+                }
+                if(StringUtils.isNotBlank(category)){
+                    predicates.add(criteriaBuilder.like(root.get("categories"), "%"+category+"%"));
+                }
+                if(0 != startFormat){
+                    predicates.add(criteriaBuilder.greaterThan(root.get("created"), startFormat));//Integer
+                }
+                if(0 != endFormat){
+                    predicates.add(criteriaBuilder.lessThan(root.get("created"), endFormat));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+        Page<Content> all = contentDao.findAll(querySpecifi, pageable);
+        LOGGER.debug("Exit getContents method");
+        return  new Page4Navigator<>(all, 11);
     }
 
 

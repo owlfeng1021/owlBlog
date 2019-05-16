@@ -133,12 +133,6 @@ public class IndexController extends BaseController {
         request.setAttribute("articles", page4Navigator);
         return this.render("page-category");
     }
-//        List<ArchiveBo> archives = siteService.getArchives();
-//        request.setAttribute("archives", archives);
-//        return this.render("archives");
-//        List<Meta> links = metaService.getMetasByType(Types.LINK.getType());
-//        request.setAttribute("links", links);
-//        return this.render("links");
 
     /**
      * 标题页面
@@ -230,37 +224,29 @@ public class IndexController extends BaseController {
                                   @RequestParam String cid, @RequestParam Integer coid,
                                   @RequestParam String author, @RequestParam String mail,
                                   @RequestParam String url, @RequestParam String text, @RequestParam String _csrf_token) {
-
         String ref = request.getHeader("Referer");
         if (StringUtils.isBlank(ref) || StringUtils.isBlank(_csrf_token)) {
             return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
         }
-
         String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
         if (StringUtils.isBlank(token)) {
             return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
         }
-
         if (null == cid || StringUtils.isBlank(text)) {
             return RestResponseBo.fail("请输入完整后评论");
         }
-
         if (StringUtils.isNotBlank(author) && author.length() > 50) {
             return RestResponseBo.fail("姓名过长");
         }
-
         if (StringUtils.isNotBlank(mail) && !TaleUtils.isEmail(mail)) {
             return RestResponseBo.fail("请输入正确的邮箱格式");
         }
-
         if (StringUtils.isNotBlank(url) && !PatternKit.isURL(url)) {
             return RestResponseBo.fail("请输入正确的URL格式");
         }
-
         if (text.length() > 200) {
             return RestResponseBo.fail("请输入200个字符以内的评论");
         }
-
         String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
         Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
         if (null != count && count > 0) {
@@ -420,9 +406,6 @@ public class IndexController extends BaseController {
     public List<IndexBo> indexPhoto() {
         IndexBo indexBo = new IndexBo();
 
-
-//        indexBo.setImages();
-//        indexBo.setTitleImages();
         return null;
 
     }

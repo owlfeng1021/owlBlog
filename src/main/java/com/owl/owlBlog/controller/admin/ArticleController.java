@@ -1,5 +1,6 @@
 package com.owl.owlBlog.controller.admin;
 
+import com.owl.owlBlog.constant.WebConst;
 import com.owl.owlBlog.controller.BaseController;
 import com.owl.owlBlog.bo.RestResponseBo;
 import com.owl.owlBlog.dto.LogActions;
@@ -28,6 +29,7 @@ import static com.owl.owlBlog.util.Commons.returnStatus;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/article")
@@ -46,17 +48,32 @@ public class ArticleController extends BaseController {
     @Resource
     private IdWorker idWorker;
 
-    @ApiOperation(value = "获取所有文章", notes = "查询分页数据")
+    @ApiOperation(value = "跳转", notes = "查询分页数据")
     @GetMapping(value = "")
-    public String index(@RequestParam(value = "page", defaultValue = "1") int page,
-                        @RequestParam(value = "limit", defaultValue = "15") int limit,
-                        HttpServletRequest request){
-        // 需要created desc排序的 content
-        Page4Navigator<Content> contentsPaginator = contentService.
-                getArticlesWithpage(Types.ARTICLE.getType(),page,limit);
-        request.setAttribute("articles", contentsPaginator);
+    public String index(HttpServletRequest request){
+
+
 //        return "admin/old_article_list";
         return "admin/article_list";
+    }
+
+    /**
+     *
+     * @param page
+     * @param limit
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "查询关键字", notes = "查询关键字")
+    @PostMapping(value = "/search")
+    @ResponseBody
+    public  Page4Navigator<Content> search(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit", defaultValue = "15") int limit,
+            @RequestParam  Map<String, String> map, HttpServletRequest request){
+        Page4Navigator<Content> byCondition = contentService.findByCondition(page, limit, map);
+//        Page4Navigator<Content> contentsPaginator = contentService.getArticlesWithpage(Types.ARTICLE.getType(),page,limit);
+        return byCondition;
     }
     @GetMapping("/publish")
     public String newArticle(HttpServletRequest request ){

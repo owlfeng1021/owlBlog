@@ -6,14 +6,17 @@
     <div th:replace="admin/header::header-body"></div>
     <div id="elementTable" class="col-md-10 col-md-offset-2">
 
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form id="fromData" :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="标题">
-                <el-input v-model="formInline.user" placeholder="输入标题"></el-input>
+                <el-input v-model="formInline.user" placeholder="输入标题" name="title"></el-input>
             </el-form-item>
             <el-form-item label="分类" style="width: 280px">
-                <el-select v-model="formInline.region" placeholder="所属分类">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="formInline.region" placeholder="所属分类" name="category">
+                    <div v-for="c in tableData ">
+                    <el-option  :value="c.categories" :text="c.categories">
+
+                    </el-option>
+                    </div>
                 </el-select>
             </el-form-item>
 
@@ -22,16 +25,16 @@
                     align="right"
                     type="date"
                     placeholder="选择开始日期"
-                    :picker-options="pickerOptions">
+                    :picker-options="pickerOptions"
+                    name="startTime">
             </el-date-picker>
-
-
             <el-date-picker
                     v-model="formInline.endTime"
                     align="right"
                     type="date"
                     placeholder="选择结束日期"
-                    :picker-options="pickerOptions">
+                    :picker-options="pickerOptions"
+                    name="endTime">
             </el-date-picker>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -84,13 +87,20 @@
                     width="280">
                 <template slot-scope="scope">
                     <a :href="'/admin/article/'+scope.row.cid"
-                       class="buttonText"><el-button  type="primary">
-                        修改  </el-button></a>
+                       class="buttonText">
+                        <el-button type="primary">
+                            修改
+                        </el-button>
+                    </a>
                     <el-button @click="delRow(scope.row.cid)" type="danger">
-                        删除</el-button>
-                    <a :href="'/article/'+scope.row.cid+'/#preview'"  target="_blank"
-                       class="buttonText"><el-button  type="success">
-                        浏览</el-button></a>
+                        删除
+                    </el-button>
+                    <a :href="'/article/'+scope.row.cid+'/#preview'" target="_blank"
+                       class="buttonText">
+                        <el-button type="success">
+                            浏览
+                        </el-button>
+                    </a>
 
                 </template>
             </el-table-column>
@@ -100,11 +110,11 @@
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="page.numberOfElements"
-                    :page-sizes="[5, 8, 10, 20]"
-                    :page-size="page.size"
+                    :current-page="tablePage.numberOfElements"
+                    :page-sizes="[15, 20, 30, 50]"
+                    :page-size="tablePage.size"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="page.totalElements">
+                    :total="tablePage.totalElements">
             </el-pagination>
         </div>
     </div>
@@ -129,8 +139,8 @@
         el: "#elementTable",
         data: {
             url: "/admin/article",
-            page:/*[[${articles}]]*/[],
-            tableData: /*[[${articles.list}]]*/[],
+            tablePage: [],
+            tableData: [],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -169,11 +179,34 @@
             currentPage3: 5,
             currentPage4: 4
         },
+
         mounted() {
-
-
+            this.init()
         },
         methods: {
+            init() {
+                var search = $("#fromData").serialize();
+                axios.post(this.url + '/search' , search).then(response => {
+                    console.log(response)
+                    this.tablePage=response.data;
+                    this.tableData=response.data.list;
+                })
+            },
+            fetchDate(){
+                var search = $("#fromData").serialize();
+                let pageNum = this.tablePage.numberOfElements<=0?1:this.tablePage.numberOfElements;
+                let number = this.tablePage.size<15?1:this.tablePage.size;
+                axios.post(this.url + '/search' + '?page=' + pageNum + '&limit=' + number, search).then(response => {
+                    console.log(response)
+                    this.tablePage=response.data;
+                    this.tableData=response.data.list;
+                })
+            },
+            refresh() {
+                setTimeout(function () {
+                    window.location.reload();
+                }, 600);
+            },
             timestampToTime(row, column) {
                 var date = new Date(row.created * 1000) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
                 var Y = date.getFullYear() + '-'
@@ -185,26 +218,50 @@
                 return Y + M + D + h + m + s
                 console.log(timestampToTime(1533293827000))
             },
-            delRow(cid){
-                axios.delete(this.url+'/delete?cid='+cid).then(response=>{
-                    console.log(response)
-                })
+            delRow(cid) {
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.delete(this.url + '/delete?cid=' + cid).then(response => {
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '删除失败'
+                        });
+                    })
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.refresh()
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             handleClick(row) {
                 console.log(row);
+
             },
             onSubmit() {
-                console.log('submit!');
+                this.fetchDate();
             },
             handleSizeChange(val) {
-                // 改变分页的大小
-                console.log(`每页 ${val} 条`);
+                // 改变分页的大小:
+                this.tablePage.size = val;
+                this.fetchDate()
+
             },
             handleCurrentChange(val) {
-                // 这里进行切换分页操作
-                console.log(`当前页: ${val}`);
-
+                this.tablePage.numberOfElements = val;
+                this.fetchDate()
             }
+
         },
     })
     /*]]>*/

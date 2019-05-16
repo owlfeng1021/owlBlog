@@ -5,12 +5,13 @@ import com.owl.owlBlog.pojo.Content;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Map;
 
-public interface ContentDao extends JpaRepository<Content, String> {
+public interface ContentDao extends JpaRepository<Content, String> , JpaSpecificationExecutor<Content> {
     List<Content> findByCategoriesOrderByCreatedDesc(String categories);
     Page<Content> findByType(String type, Pageable pageable);
 
