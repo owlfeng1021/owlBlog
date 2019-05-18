@@ -2,7 +2,7 @@
 重构一个开源的项目 使用springdatajpa 
 <br/>
 <hr/>
-[![Build Status](https://travis-ci.org/owlfeng1021/owlBlog.svg?branch=master)](https://travis-ci.org/owlfeng1021/owlBlog)
+
 参照的开源项目链接
 [github.com/ZHENFENG13/My-Blog](https://github.com/ZHENFENG13/My-Blog)
 <br/>
