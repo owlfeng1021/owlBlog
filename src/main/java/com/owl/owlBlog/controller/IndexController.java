@@ -32,7 +32,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Controller
 public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
@@ -44,7 +43,6 @@ public class IndexController extends BaseController {
     IMetaService metaService;
     @Resource
     SiteService siteService;
-
 
     /**
      * 首页
@@ -82,7 +80,6 @@ public class IndexController extends BaseController {
         }
         return this.render("index");
     }
-
     /**
      * 文章页(预览)
      *
@@ -172,6 +169,7 @@ public class IndexController extends BaseController {
             request.setAttribute("cp", cp);
             Page4Navigator<Comment> commentsPaginator = commentService.getComments(contents.getCid(), Integer.parseInt(cp), 6);
             request.setAttribute("comments", commentsPaginator);
+
         }
     }
 
@@ -191,7 +189,7 @@ public class IndexController extends BaseController {
             Content temp = new Content();
             temp.setCid(cid);
             temp.setHits(chits + hits);
-            contentService.updateContentByCid(temp);
+            contentService.updatePage(temp);
             cache.hset("article" + cid, "hits", 1);
         } else {
             cache.hset("article" + cid, "hits", hits);

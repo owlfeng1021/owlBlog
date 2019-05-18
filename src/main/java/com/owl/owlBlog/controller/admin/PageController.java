@@ -62,16 +62,16 @@ public class PageController extends BaseController {
         content1.setAllowComment(true);
         content1.setAllowPing(true);
         content1.setAllowFeed(true);
-        contentService.publish(content1);
+        content1.setAuthorId(user.getUid());
 
+        String result = contentService.updatePage(content1);
         if (null != allowComment) {
             content1.setAllowComment(allowComment == 1);
         }
         if (null != allowPing) {
             content1.setAllowPing(allowPing == 1);
         }
-        content1.setAuthorId(user.getUid());
-        String result = contentService.publish(content1);
+
         if (!WebConst.SUCCESS_RESULT.equals(result)) {
             return RestResponseBo.fail(result);
         }
@@ -99,7 +99,7 @@ public class PageController extends BaseController {
             contents.setAllowPing(allowPing == 1);
         }
         contents.setAuthorId(users.getUid());
-        String result = contentService.updateArticle(contents);
+        String result = contentService.updatePage(contents);
         if (!WebConst.SUCCESS_RESULT.equals(result)) {
             return RestResponseBo.fail(result);
         }

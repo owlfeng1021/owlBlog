@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 分类信息service接口
@@ -102,19 +103,21 @@ public class IMetaService {
      * @param names
      * @param type
      */
-    void saveMetas(String cid, String names, String type) {
+   public List<Meta>  saveMetas(String cid, String Metas, String type) {
         if (null == cid) {
             throw new TipException("项目关联id不能为空");
         }
         Content content = contentService.getContents(cid);
-        ArrayList<Content> contentlist = new ArrayList<>();
-        contentlist.add(content);
-        if (StringUtils.isNotBlank(names) && StringUtils.isNotBlank(type)) {
-            String[] nameArr = StringUtils.split(names, ",");
+        List<Meta> MetaList = new ArrayList<>();
+        if (StringUtils.isNotBlank(Metas) && StringUtils.isNotBlank(type)) {
+            String[] nameArr = StringUtils.split(Metas, ",");
             for (String name : nameArr) {
-                this.saveOrUpdate(contentlist, name, type);
+//                String temp = name;
+                Meta meta = this.saveOrUpdate(name, type);
+                MetaList.add(meta);
             }
         }
+      return MetaList;
 
     }
 
@@ -189,33 +192,21 @@ public class IMetaService {
         return byType;
     }
     // 保存
-    private void saveOrUpdate(List<Content> contentlist, String name, String type) {
+    private Meta saveOrUpdate( String name, String type) {
         List<Meta> metaVos = metaDao.findByTypeAndName(type, name);
-        Meta metas;
+        Meta metas = new Meta();
         if (metaVos.size() == 1) {
-            metas = metaVos.get(0);
-            metas.setContentList(contentlist);
-            metaDao.save(metas);
+            Meta nativeMeta =metaVos.get(0);
+            return nativeMeta;
         } else if (metaVos.size() > 1) {
             throw new TipException("查询到多条数据");
-        } else {
-            metas = new Meta();
+        }
             metas.setMid(new IdWorker().nextId() + "");
             metas.setSlug(name);
             metas.setName(name);
             metas.setType(type);
-            metas.setContentList(contentlist);
             metaDao.save(metas);
-        }
-//        if (mid != 0) {
-//            Long count = relationshipService.countById(cid, mid);
-//            if (count == 0) {
-//                RelationshipVoKey relationships = new RelationshipVoKey();
-//                relationships.setCid(cid);
-//                relationships.setMid(mid);
-//                relationshipService.insertVo(relationships);
-//            }
-//        }
-    }
+        return metas;
+}
 
 }

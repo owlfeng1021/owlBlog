@@ -5,6 +5,7 @@ import com.owl.owlBlog.dao.ContentDao;
 import com.owl.owlBlog.dto.Types;
 import com.owl.owlBlog.exception.TipException;
 import com.owl.owlBlog.pojo.Content;
+import com.owl.owlBlog.pojo.Meta;
 import com.owl.owlBlog.util.*;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.lang3.StringUtils;
@@ -96,18 +97,23 @@ public class IContentService {
         contents.setModified(time);
         contents.setHits(0);
         contents.setCommentsNum(0);
-        if (StringUtils.isBlank(contents.getCid()))
-        {
+        if (StringUtils.isBlank(contents.getCid())) {
             contents.setCid(idWorker.nextId() + "");
         }
-
         String tags = contents.getTags();
         String categories = contents.getCategories();
-        contentDao.save(contents);
-
         String cid = contents.getCid();
-        metasService.saveMetas(cid, tags, Types.TAG.getType());
-        metasService.saveMetas(cid, categories, Types.CATEGORY.getType());
+        // 传入文章的cid 然后保存新添加或者删除mate
+
+        List<Meta> tagsMeta = metasService.saveMetas(cid, tags, Types.TAG.getType());
+        List<Meta> categoryMeta = metasService.saveMetas(cid, categories, Types.CATEGORY.getType());
+        // 因为category 只有一个所以先加到里面
+        tagsMeta.add(categoryMeta.get(0));
+
+        contents.setMetaList(tagsMeta);
+        contents.setTags(tags);
+        contents.setCategories(categories);
+        contentDao.save(contents);
         return WebConst.SUCCESS_RESULT;
 
     }
@@ -128,15 +134,16 @@ public class IContentService {
         LOGGER.debug("Exit getContents method");
         return new Page4Navigator<>(contentList, 11);
     }
-    public Page4Navigator<Content> findByCondition(int page, int limit, Map<String, String> map){
+
+    public Page4Navigator<Content> findByCondition(int page, int limit, Map<String, String> map) {
         LOGGER.debug("Enter getContents method");
         String title = map.get("title");
         String startTime = map.get("startTime");
         String endTime = map.get("endTime");
         String category = map.get("category");
 
-        Integer startFormat = DateKit.stringFormat(startTime,"0");
-        Integer endFormat = DateKit.stringFormat(endTime,"1");
+        Integer startFormat = DateKit.stringFormat(startTime, "0");
+        Integer endFormat = DateKit.stringFormat(endTime, "1");
 
         Sort sort = new Sort(Sort.Direction.DESC, "created");
         Pageable pageable = PageRequest.of(page - 1, limit, sort);
@@ -145,17 +152,17 @@ public class IContentService {
             @Override
             public Predicate toPredicate(Root<Content> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-                    predicates.add(criteriaBuilder.equal(root.get("type"),"post"));
-                if(StringUtils.isNotBlank(title) ){
-                    predicates.add(criteriaBuilder.like(root.get("title"), "%"+title+"%"));
+                predicates.add(criteriaBuilder.equal(root.get("type"), "post"));
+                if (StringUtils.isNotBlank(title)) {
+                    predicates.add(criteriaBuilder.like(root.get("title"), "%" + title + "%"));
                 }
-                if(StringUtils.isNotBlank(category)){
-                    predicates.add(criteriaBuilder.like(root.get("categories"), "%"+category+"%"));
+                if (StringUtils.isNotBlank(category)) {
+                    predicates.add(criteriaBuilder.like(root.get("categories"), "%" + category + "%"));
                 }
-                if(0 != startFormat){
+                if (0 != startFormat) {
                     predicates.add(criteriaBuilder.greaterThan(root.get("created"), startFormat));//Integer
                 }
-                if(0 != endFormat){
+                if (0 != endFormat) {
                     predicates.add(criteriaBuilder.lessThan(root.get("created"), endFormat));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -163,7 +170,7 @@ public class IContentService {
         };
         Page<Content> all = contentDao.findAll(querySpecifi, pageable);
         LOGGER.debug("Exit getContents method");
-        return  new Page4Navigator<>(all, 11);
+        return new Page4Navigator<>(all, 11);
     }
 
 
@@ -192,13 +199,15 @@ public class IContentService {
     }
 
     /**
-     * 根据主键更新
+     * 更新page
      *
      * @param contentVo contentVo
      */
     @CacheEvict(value = "contents", allEntries = true)
-    public void updateContentByCid(Content content) {
+    public String updatePage(Content content) {
         contentDao.save(content);
+        return WebConst.SUCCESS_RESULT;
+
     }
 
 
@@ -207,8 +216,8 @@ public class IContentService {
      *
      * @return Content
      */
-   public  List<Content> getRssArticles() {
-        return contentDao.findByTypeAndStatusOrderByCreatedDesc(Types.ARTICLE.getType(),Types.PUBLISH.getType());
+    public List<Content> getRssArticles() {
+        return contentDao.findByTypeAndStatusOrderByCreatedDesc(Types.ARTICLE.getType(), Types.PUBLISH.getType());
     }
 
     /**
@@ -242,13 +251,12 @@ public class IContentService {
         return new Page4Navigator<Content>(PageData, limit);
 
     }
+
     /**
      * 根据分类查找
      *
      * @param cid
      */
-
-
     public List<Content> findByCatgories(String cid) {
         return contentDao.findByCategoriesOrderByCreatedDesc(cid);
     }
@@ -272,8 +280,27 @@ public class IContentService {
      * @param contents
      */
     @CacheEvict(value = "contents", allEntries = true)
-    public String updateArticle(Content contents) {
-        contentDao.save(contents);
+    public String updateArticle(Content content) {
+
+        Content nativeContent = contentDao.findById(content.getCid()).get();
+        nativeContent.setAllowFeed(content.getAllowFeed());
+        nativeContent.setAllowPing(content.getAllowPing());
+        nativeContent.setAllowComment(content.getAllowComment());
+        nativeContent.setTitle(content.getTitle());
+        nativeContent.setSlug(content.getSlug());
+        nativeContent.setModified(content.getModified());
+        nativeContent.setContent(content.getContent());
+        nativeContent.setStatus(content.getStatus());
+        nativeContent.setCategories(content.getCategories());
+
+        List<Meta> tagMeta = metasService.saveMetas(nativeContent.getCid(), content.getTags(), Types.TAG.getType());
+        List<Meta> categoryMeta = metasService.saveMetas(nativeContent.getCid(), content.getCategories(), Types.CATEGORY.getType());
+        tagMeta.add(categoryMeta.get(0));
+
+        nativeContent.setMetaList(tagMeta);
+        nativeContent.setCategories(content.getCategories());
+        nativeContent.setTags(content.getTags());
+        contentDao.save(nativeContent);
         return WebConst.SUCCESS_RESULT;
     }
 
@@ -291,8 +318,8 @@ public class IContentService {
 
     public List<Content> getPage() {
         Sort sort = new Sort(Sort.Direction.DESC, "created");
-        Pageable pageable = PageRequest.of( 0, 10, sort);
+        Pageable pageable = PageRequest.of(0, 10, sort);
         Page<Content> byType = contentDao.findByType(Types.PAGE.getType(), pageable);
-        return byType.getContent() ;
+        return byType.getContent();
     }
 }

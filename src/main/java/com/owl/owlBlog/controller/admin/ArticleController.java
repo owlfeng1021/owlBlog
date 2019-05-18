@@ -106,6 +106,17 @@ public class ArticleController extends BaseController {
         String result = contentService.publish(contents);
         return returnStatus(result);
     }
+
+    @PostMapping(value = "/modify")
+    @ResponseBody
+    public RestResponseBo modifyArticle(Content contents, HttpServletRequest request) {
+        User users = this.user(request);
+        contents.setAuthorId(users.getUid());
+        contents.setType(Types.ARTICLE.getType());
+        String result = contentService.updateArticle(contents);
+        return returnStatus(result);
+    }
+
     @DeleteMapping(value = "/delete")
     @ResponseBody
     public RestResponseBo delete(@RequestParam String cid, HttpServletRequest request) {

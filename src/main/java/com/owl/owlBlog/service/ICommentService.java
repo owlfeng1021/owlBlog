@@ -67,7 +67,7 @@ public class ICommentService {
         commentDao.save(comments);
 
         contents.setCommentsNum(contents.getCommentsNum() + 1);
-        contentService.updateContentByCid(contents);
+        contentService.updateArticle(contents);
         return WebConst.SUCCESS_RESULT;
     }
 
@@ -137,7 +137,7 @@ public class ICommentService {
                 Content contents = contentService.getContents(cid);
                 contents.setCommentsNum(contents.getCommentsNum()-1);
                 if (null != contents && contents.getCommentsNum() > 0) {
-                    contentService.updateContentByCid(contents);
+                    contentService.updateArticle(contents);
                 }
             }
         }else {
