@@ -9,5 +9,11 @@
 因为是使用这个项目原本的主题没有个人风格 所以就准备自己添加一个可以切换的主题 
 这个项目里面的功能 都已经实现了 但是还有很多没有写完的功能 
 因为里面有是tale内置的样式和js 导致和我现在使用的css和js 有点冲突 就很难受 
-
+前台展示
+![owlfeng_admin_publish](https://github.com/owlfeng1021/static-files/blob/master/owlBlog/owlBlog_admin_index.png)
+后台展示
+![owlfeng_admin_publish](https://github.com/owlfeng1021/static-files/blob/master/owlBlog/owlBlog_index.png)
+文章展示
+![owlfeng_admin_publish](https://github.com/owlfeng1021/static-files/blob/master/owlBlog/owlBlog_admin_article.png)
+发布展示
 ![owlfeng_admin_publish](https://github.com/owlfeng1021/static-files/blob/master/owlBlog/owlBlog_admin_publish.png)
